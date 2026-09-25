@@ -1,37 +1,39 @@
 {
   "scenes": [
     {
-      "id": "node-1",
+      "id": "corridor",
       "name": {
-        "en": "Pedestrian Street & Active Frontage",
-        "te": "పాదచారుల వీధి & క్రియాశీల ప్రాంతం"
+        "en": "Historic Colonnade Corridor",
+        "te": "చారిత్రక స్తంభాల కారిడార్"
       },
-      "image": "assets/panos/station-1-pedestrian-zone.jpg",
+      "image": "assets/Corridor.jpg",
+      "rotation": "0 -90 0",
       "waypoints": [
         {
-          "target": "node-2",
-          "position": "0 0.1 -6",
+          "target": "courtyard",
+          "position": "0 0.2 -6",
           "label": {
-            "en": "Proceed to Market Crossing",
-            "te": "మార్కెట్ క్రాసింగ్ వైపు వెళ్ళండి"
+            "en": "Enter Central Atrium Courtyard",
+            "te": "సెంట్రల్ కోర్ట్‌యార్డ్‌లోకి వెళ్లండి"
           }
         }
       ]
     },
     {
-      "id": "node-2",
+      "id": "courtyard",
       "name": {
-        "en": "Market Crossing & Cycle Corridor",
-        "te": "మార్కెట్ క్రాసింగ్ & సైకిల్ కారిడార్"
+        "en": "Multi-Level Timber Atrium",
+        "te": "మల్టీ లెవల్ టింబర్ కోర్ట్‌యార్డ్"
       },
-      "image": "assets/panos/station-2-bike-corridor.jpg",
+      "image": "assets/Courtyard.png",
+      "rotation": "0 0 0",
       "waypoints": [
         {
-          "target": "node-1",
-          "position": "0 0.1 6",
+          "target": "corridor",
+          "position": "0 0.2 5",
           "label": {
-            "en": "Back to Walkway",
-            "te": "పాదచారుల మార్గానికి తిరిగి వెళ్ళండి"
+            "en": "Return to Colonnade Corridor",
+            "te": "కారిడార్‌కు తిరిగి వెళ్ళండి"
           }
         }
       ]
