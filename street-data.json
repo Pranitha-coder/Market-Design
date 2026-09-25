@@ -6,7 +6,7 @@
         "en": "Historic Colonnade Corridor",
         "te": "చారిత్రక స్తంభాల కారిడార్"
       },
-      "image": "assets/Corridor.jpg",
+      "image": "Corridor.jpg",
       "rotation": "0 -90 0",
       "waypoints": [
         {
@@ -25,7 +25,7 @@
         "en": "Multi-Level Timber Atrium",
         "te": "మల్టీ లెవల్ టింబర్ కోర్ట్‌యార్డ్"
       },
-      "image": "assets/Courtyard.png",
+      "image": "Courtyard.png",
       "rotation": "0 0 0",
       "waypoints": [
         {
