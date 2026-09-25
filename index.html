@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>Urban Market & Atrium Redesign | 360 VR</title>
+  <title>Architectural Walkthrough | 360 VR</title>
   
   <!-- A-Frame VR Framework -->
   <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
@@ -11,7 +11,7 @@
 
   <style>
     :root {
-      --bg-glass: rgba(15, 23, 42, 0.72);
+      --bg-glass: rgba(15, 23, 42, 0.75);
       --border-glass: rgba(255, 255, 255, 0.2);
       --accent: #2ecc71;
       --text-main: #ffffff;
@@ -36,15 +36,14 @@
       color: var(--text-main);
     }
 
-    /* ================= WELCOME HERO SCREEN ================= */
+    /* ================= WELCOME SCREEN ================= */
     #welcome-screen {
       position: absolute;
       inset: 0;
       z-index: 1000;
-      /* Architectural dual-gradient overlay + Your uploaded render */
       background: 
         linear-gradient(180deg, rgba(10, 15, 25, 0.75) 0%, rgba(10, 15, 25, 0.25) 50%, rgba(0, 0, 0, 0.9) 100%),
-        url('assets/welcome-hero.jpg') center center / cover no-repeat;
+        url('welcome-hero.jpg') center center / cover no-repeat;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -119,7 +118,7 @@
       transform: translateY(-3px) scale(1.02);
     }
 
-    /* ================= LEFT TRANSLUCENT MENU ================= */
+    /* ================= TRANSLUCENT LEFT MENU ================= */
     #sidebar-menu {
       position: absolute;
       left: 20px;
@@ -245,11 +244,11 @@
 </head>
 <body>
 
-  <!-- ================= 1. WELCOME HERO ================= -->
+  <!-- 1. WELCOME SCREEN -->
   <section id="welcome-screen">
     <div class="welcome-header">
-      <h1 data-i18n="title">Market & Atrium Redesign</h1>
-      <p data-i18n="subtitle">Architectural Spatial Walkthrough | Virtual Reality Experience</p>
+      <h1 data-i18n="title">Architectural Spatial Walkthrough</h1>
+      <p data-i18n="subtitle">Virtual Reality Experience | Historic Colonnade & Atrium</p>
     </div>
 
     <div class="welcome-footer">
@@ -257,12 +256,12 @@
     </div>
   </section>
 
-  <!-- ================= 2. ACTIVE VIEW TITLE ================= -->
+  <!-- 2. SCENE TITLE BADGE -->
   <div id="scene-indicator">
     <span id="current-scene-title">Historic Colonnade Corridor</span>
   </div>
 
-  <!-- ================= 3. SINTRA-STYLE LEFT SIDEBAR ================= -->
+  <!-- 3. TRANSLUCENT LEFT MENU -->
   <nav id="sidebar-menu">
     <button class="menu-item" id="btn-home" title="Home View">
       <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
@@ -285,7 +284,7 @@
     </button>
   </nav>
 
-  <!-- ================= 4. SITE PLAN MODAL ================= -->
+  <!-- 4. SITE PLAN MODAL -->
   <div id="siteplan-modal" class="hidden">
     <div class="modal-content">
       <button class="btn-close" id="btn-close-plan">&times;</button>
@@ -298,16 +297,16 @@
     </div>
   </div>
 
-  <!-- ================= 5. A-FRAME 360 WEBXR SCENE ================= -->
+  <!-- 5. A-FRAME 360 WEBXR SCENE -->
   <a-scene embedded loading-screen="dotsColor: #2ecc71; backgroundColor: #0a0e14" vr-mode-ui="enabled: false">
     
-    <!-- 360 Panorama Projection Sphere -->
+    <!-- 360 Panorama Projection -->
     <a-sky id="skybox" radius="100" rotation="0 -90 0"></a-sky>
 
-    <!-- Hotspot Ring Container -->
+    <!-- Waypoint Container -->
     <a-entity id="waypoint-group"></a-entity>
 
-    <!-- Camera Rig & Controls -->
+    <!-- Camera Rig & Headset Controls -->
     <a-entity id="rig" position="0 1.6 0">
       <a-camera id="head" look-controls="pointerLockEnabled: false">
         <a-cursor
@@ -319,18 +318,18 @@
         </a-cursor>
       </a-camera>
 
-      <!-- Meta Quest Laser Raycaster -->
+      <!-- Meta Quest Raycasters -->
       <a-entity laser-controls="hand: right" raycaster="objects: .clickable; lineColor: #2ecc71; lineOpacity: 0.85"></a-entity>
       <a-entity laser-controls="hand: left" raycaster="objects: .clickable; lineColor: #2ecc71; lineOpacity: 0.85"></a-entity>
     </a-entity>
   </a-scene>
 
-  <!-- ================= 6. JAVASCRIPT LOGIC ================= -->
+  <!-- 6. APPLICATION LOGIC -->
   <script>
     const translations = {
       en: {
-        title: "Market & Atrium Redesign",
-        subtitle: "Architectural Spatial Walkthrough | Virtual Reality Experience",
+        title: "Architectural Spatial Walkthrough",
+        subtitle: "Virtual Reality Experience | Historic Colonnade & Atrium",
         start: "START TOUR",
         menu_home: "Home",
         menu_plan: "Site Plan",
@@ -339,8 +338,8 @@
         siteplan_desc: "Jump directly to any architectural zone below:"
       },
       te: {
-        title: "మార్కెట్ & కోర్ట్‌యార్డ్ పునఃరూపకల్పన",
-        subtitle: "ఆర్కిటెక్చరల్ స్పేషియల్ వాక్‌త్రూ | వర్చువల్ రియాలిటీ అనుభవం",
+        title: "ఆర్కిటెక్చరల్ స్పేషియల్ వాక్‌త్రూ",
+        subtitle: "వర్చువల్ రియాలిటీ అనుభవం | చారిత్రక కారిడార్ & కోర్ట్‌యార్డ్",
         start: "ప్రారంభించండి",
         menu_home: "హోమ్",
         menu_plan: "ప్లాన్",
@@ -377,7 +376,6 @@
       if (!scene) return;
       activeSceneId = sceneId;
 
-      // Dip-to-black fade to eliminate VR motion sickness
       sky.setAttribute('animation__fadeout', {
         property: 'material.opacity',
         to: 0,
@@ -453,7 +451,7 @@
       }
     }
 
-    // Event Handlers
+    // Event Bindings
     document.getElementById('btn-start').addEventListener('click', () => {
       document.getElementById('welcome-screen').classList.add('hidden');
       if (activeSceneId) switchScene(activeSceneId);
