@@ -3,21 +3,225 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>Urban Market Street | 360 VR Experience</title>
+  <title>Architectural Walkthrough | 360 VR</title>
   
   <!-- A-Frame VR Framework -->
   <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
   <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>
 
-  <link rel="stylesheet" href="style.css">
+  <style>
+    :root {
+      --bg-glass: rgba(18, 24, 32, 0.72);
+      --border-glass: rgba(255, 255, 255, 0.18);
+      --accent: #2ecc71;
+      --text: #f5f6fa;
+      --text-sub: #b2bec3;
+      --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: var(--font);
+      -webkit-font-smoothing: antialiased;
+      user-select: none;
+    }
+
+    body, html {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background-color: #000;
+      color: var(--text);
+    }
+
+    /* ================= WELCOME HERO ================= */
+    #welcome-screen {
+      position: absolute;
+      inset: 0;
+      z-index: 1000;
+      background: radial-gradient(circle at center, rgba(10, 15, 25, 0.75) 0%, #000000 100%),
+                  url('assets/Corridor.jpg') center/cover no-repeat;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      padding: 60px 24px;
+      text-align: center;
+      transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.8s;
+    }
+
+    #welcome-screen.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .welcome-header h1 {
+      font-size: 2.2rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      font-weight: 700;
+      text-shadow: 0 4px 15px rgba(0,0,0,0.8);
+    }
+
+    .welcome-header p {
+      color: var(--text-sub);
+      margin-top: 10px;
+      font-size: 1.05rem;
+      letter-spacing: 1px;
+    }
+
+    .welcome-footer {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+    }
+
+    .btn-start {
+      padding: 16px 52px;
+      font-size: 1.05rem;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #fff;
+      background: var(--bg-glass);
+      border: 1px solid var(--accent);
+      border-radius: 40px;
+      cursor: pointer;
+      box-shadow: 0 0 25px rgba(46, 204, 113, 0.35);
+      backdrop-filter: blur(12px);
+      transition: all 0.3s ease;
+    }
+
+    .btn-start:hover {
+      background: var(--accent);
+      color: #121212;
+      box-shadow: 0 0 35px rgba(46, 204, 113, 0.75);
+      transform: translateY(-2px);
+    }
+
+    /* ================= LEFT TRANSLUCENT MENU ================= */
+    #sidebar-menu {
+      position: absolute;
+      left: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 500;
+      background: var(--bg-glass);
+      border: 1px solid var(--border-glass);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-radius: 20px;
+      padding: 14px 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .menu-item {
+      background: transparent;
+      border: none;
+      color: var(--text-sub);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 10px 12px;
+      min-width: 64px;
+      cursor: pointer;
+      border-radius: 12px;
+      transition: all 0.2s ease;
+    }
+
+    .menu-item svg {
+      width: 22px;
+      height: 22px;
+      stroke: currentColor;
+      stroke-width: 2;
+      fill: none;
+    }
+
+    .menu-item span {
+      font-size: 0.72rem;
+      letter-spacing: 0.5px;
+      font-weight: 500;
+    }
+
+    .menu-item:hover {
+      background: rgba(255, 255, 255, 0.12);
+      color: var(--accent);
+      transform: scale(1.05);
+    }
+
+    /* ================= TOP SCENE BADGE ================= */
+    #scene-indicator {
+      position: absolute;
+      top: 24px;
+      left: 24px;
+      z-index: 500;
+      background: var(--bg-glass);
+      border: 1px solid var(--border-glass);
+      backdrop-filter: blur(12px);
+      padding: 10px 22px;
+      border-radius: 30px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+    }
+
+    /* ================= SITE PLAN MODAL ================= */
+    #siteplan-modal {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(10px);
+      z-index: 800;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: opacity 0.3s ease, visibility 0.3s;
+    }
+
+    #siteplan-modal.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .modal-content {
+      background: var(--bg-glass);
+      border: 1px solid var(--border-glass);
+      padding: 30px;
+      border-radius: 20px;
+      max-width: 520px;
+      width: 90%;
+      text-align: center;
+      position: relative;
+    }
+
+    .btn-close {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: transparent;
+      border: none;
+      color: #fff;
+      font-size: 1.6rem;
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
 
   <!-- ================= 1. WELCOME SCREEN ================= -->
   <section id="welcome-screen">
     <div class="welcome-header">
-      <h1 data-i18n="title">Market Street Architectural Walkthrough</h1>
-      <p data-i18n="subtitle">Urban Redesign & Street Revitalization | Virtual Reality Experience</p>
+      <h1 data-i18n="title">Architectural Spatial Walkthrough</h1>
+      <p data-i18n="subtitle">360 VR Experience | Historic Colonnade & Atrium Courtyard</p>
     </div>
 
     <div class="welcome-footer">
@@ -25,12 +229,12 @@
     </div>
   </section>
 
-  <!-- ================= 2. SITE / SCENE TITLE BADGE ================= -->
+  <!-- ================= 2. ACTIVE VIEW TITLE ================= -->
   <div id="scene-indicator">
-    <span id="current-scene-title">Pedestrian Street</span>
+    <span id="current-scene-title">Historic Colonnade Corridor</span>
   </div>
 
-  <!-- ================= 3. LEFT TRANSLUCENT SIDEBAR ================= -->
+  <!-- ================= 3. SINTRA-STYLE LEFT SIDEBAR ================= -->
   <nav id="sidebar-menu">
     <button class="menu-item" id="btn-home" title="Home View">
       <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
@@ -53,24 +257,24 @@
     </button>
   </nav>
 
-  <!-- ================= 4. SITE PLAN MODAL OVERLAY ================= -->
+  <!-- ================= 4. SITE PLAN MODAL ================= -->
   <div id="siteplan-modal" class="hidden">
     <div class="modal-content">
       <button class="btn-close" id="btn-close-plan">&times;</button>
-      <h2 style="margin-bottom: 12px;" data-i18n="siteplan_title">Urban Master Plan</h2>
-      <p style="color: var(--text-sub); margin-bottom: 20px;" data-i18n="siteplan_desc">Select a station marker below to jump directly to that vantage point.</p>
-      <div style="border: 2px dashed rgba(255,255,255,0.2); padding: 40px 20px; border-radius: 12px;">
-        <button class="btn-start" style="padding: 8px 16px; font-size: 0.8rem; margin: 5px;" onclick="switchScene('node-1'); document.getElementById('siteplan-modal').classList.add('hidden');">Station 1: Pedestrian Area</button>
-        <button class="btn-start" style="padding: 8px 16px; font-size: 0.8rem; margin: 5px;" onclick="switchScene('node-2'); document.getElementById('siteplan-modal').classList.add('hidden');">Station 2: Bike Crossing</button>
+      <h2 style="margin-bottom: 10px;" data-i18n="siteplan_title">Vantage Point Directory</h2>
+      <p style="color: var(--text-sub); margin-bottom: 22px;" data-i18n="siteplan_desc">Jump directly to any architectural zone below:</p>
+      <div style="display: flex; flex-direction: column; gap: 12px;">
+        <button class="btn-start" style="padding: 12px 20px; font-size: 0.85rem;" onclick="switchScene('corridor'); document.getElementById('siteplan-modal').classList.add('hidden');">1. Historic Colonnade Corridor</button>
+        <button class="btn-start" style="padding: 12px 20px; font-size: 0.85rem;" onclick="switchScene('courtyard'); document.getElementById('siteplan-modal').classList.add('hidden');">2. Multi-Level Timber Atrium</button>
       </div>
     </div>
   </div>
 
-  <!-- ================= 5. A-FRAME WEBXR 3D SCENE ================= -->
-  <a-scene embedded loading-screen="dotsColor: #2ecc71; backgroundColor: #0b0f14" vr-mode-ui="enabled: false">
+  <!-- ================= 5. A-FRAME 360 WEBXR SCENE ================= -->
+  <a-scene embedded loading-screen="dotsColor: #2ecc71; backgroundColor: #0a0e14" vr-mode-ui="enabled: false">
     
-    <!-- 360 Panorama Projection Sphere -->
-    <a-sky id="skybox" radius="100" rotation="0 0 0"></a-sky>
+    <!-- 360 Panorama Projection -->
+    <a-sky id="skybox" radius="100" rotation="0 -90 0"></a-sky>
 
     <!-- Waypoint Container -->
     <a-entity id="waypoint-group"></a-entity>
@@ -81,40 +285,40 @@
         <a-cursor
           id="cursor"
           geometry="primitive: ring; radiusInner: 0.015; radiusOuter: 0.025"
-          material="color: #ffffff; shader: flat; opacity: 0.8"
+          material="color: #ffffff; shader: flat; opacity: 0.85"
           animation__fuse="property: scale; startEvents: fusing; easing: easeInCubic; dur: 1200; from: 1 1 1; to: 0.2 0.2 0.2"
           raycaster="objects: .clickable">
         </a-cursor>
       </a-camera>
 
-      <!-- Meta Quest Laser Pointers -->
-      <a-entity laser-controls="hand: right" raycaster="objects: .clickable; lineColor: #2ecc71; lineOpacity: 0.8"></a-entity>
-      <a-entity laser-controls="hand: left" raycaster="objects: .clickable; lineColor: #2ecc71; lineOpacity: 0.8"></a-entity>
+      <!-- Meta Quest Controller Raycasters -->
+      <a-entity laser-controls="hand: right" raycaster="objects: .clickable; lineColor: #2ecc71; lineOpacity: 0.85"></a-entity>
+      <a-entity laser-controls="hand: left" raycaster="objects: .clickable; lineColor: #2ecc71; lineOpacity: 0.85"></a-entity>
     </a-entity>
   </a-scene>
 
-  <!-- ================= 6. JAVASCRIPT CONTROLLER ================= -->
+  <!-- ================= 6. CONTROLLER SCRIPT ================= -->
   <script>
     const translations = {
       en: {
-        title: "Market Street Architectural Walkthrough",
-        subtitle: "Urban Redesign & Street Revitalization | Virtual Reality Experience",
+        title: "Architectural Spatial Walkthrough",
+        subtitle: "360 VR Experience | Historic Colonnade & Atrium Courtyard",
         start: "START TOUR",
         menu_home: "Home",
         menu_plan: "Site Plan",
         menu_vr: "VR Mode",
-        siteplan_title: "Urban Master Plan",
-        siteplan_desc: "Select a station marker below to jump directly to that vantage point."
+        siteplan_title: "Vantage Point Directory",
+        siteplan_desc: "Jump directly to any architectural zone below:"
       },
       te: {
-        title: "మార్కెట్ వీధి ఆర్కిటెక్చరల్ వాక్‌త్రూ",
-        subtitle: "పట్టణ పునఃరూపకల్పన & వీధి అభివృద్ధి | వర్చువల్ రియాలిటీ అనుభవం",
+        title: "ఆర్కిటెక్చరల్ స్పేషియల్ వాక్‌త్రూ",
+        subtitle: "360 విఆర్ అనుభవం | చారిత్రక కారిడార్ & కోర్ట్‌యార్డ్",
         start: "ప్రారంభించండి",
         menu_home: "హోమ్",
         menu_plan: "ప్లాన్",
         menu_vr: "విఆర్ మోడ్",
-        siteplan_title: "పట్టణ మాస్టర్ ప్లాన్",
-        siteplan_desc: "ఆ ప్రదేశాన్ని చూడటానికి క్రింది స్టేషన్‌ను ఎంచుకోండి."
+        siteplan_title: "ప్రదేశాల డైరెక్టరీ",
+        siteplan_desc: "ఏదైనా ఆర్కిటెక్చరల్ ప్రాంతానికి వెళ్లడానికి కింద ఎంచుకోండి:"
       }
     };
 
@@ -136,7 +340,7 @@
           activeSceneId = tourData[0].id;
         }
       } catch (err) {
-        console.error("Error loading tour data:", err);
+        console.error("Error loading JSON manifest:", err);
       }
     }
 
@@ -145,25 +349,27 @@
       if (!scene) return;
       activeSceneId = sceneId;
 
+      // Dip-to-black fade to avoid VR motion sickness
       sky.setAttribute('animation__fadeout', {
         property: 'material.opacity',
         to: 0,
-        dur: 300,
+        dur: 280,
         easing: 'easeInOutQuad'
       });
 
       setTimeout(() => {
         sky.setAttribute('src', scene.image);
+        sky.setAttribute('rotation', scene.rotation || '0 0 0');
         currentSceneTitle.innerText = scene.name[currentLang];
         renderWaypoints(scene.waypoints);
 
         sky.setAttribute('animation__fadein', {
           property: 'material.opacity',
           to: 1,
-          dur: 300,
+          dur: 280,
           easing: 'easeInOutQuad'
         });
-      }, 300);
+      }, 280);
     }
 
     function renderWaypoints(waypoints) {
@@ -177,8 +383,8 @@
         wpEntity.innerHTML = `
           <a-ring 
             class="clickable" 
-            radius-inner="0.3" 
-            radius-outer="0.6" 
+            radius-inner="0.32" 
+            radius-outer="0.65" 
             color="#2ecc71" 
             rotation="-90 0 0" 
             material="opacity: 0.85; transparent: true">
@@ -219,7 +425,7 @@
       }
     }
 
-    // UI Event Handlers
+    // UI Listeners
     document.getElementById('btn-start').addEventListener('click', () => {
       document.getElementById('welcome-screen').classList.add('hidden');
       if (activeSceneId) switchScene(activeSceneId);
@@ -238,7 +444,6 @@
     });
 
     document.getElementById('btn-vr').addEventListener('click', () => {
-      // Trigger WebXR Immersive Session for Meta Quest
       if (aScene.enterVR) {
         aScene.enterVR();
       }
