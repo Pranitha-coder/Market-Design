@@ -1,268 +1,255 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
-  <title>Architectural 360 Tour | Sintra Style</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Urban Market Street | 360 VR Experience</title>
   
   <!-- A-Frame VR Framework -->
   <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
   <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>
 
-  <style>
-    /* Sintra-Style Clean Architectural UI */
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-    
-    /* Top Header Bar */
-    #top-bar {
-      position: absolute;
-      top: 0; left: 0; width: 100%;
-      padding: 16px 24px;
-      display: flex; justify-content: space-between; align-items: center;
-      background: linear-gradient(180deg, rgba(10,12,18,0.7) 0%, rgba(10,12,18,0) 100%);
-      color: #fff; z-index: 1000; pointer-events: none;
-    }
-    #project-title { font-size: 1.1rem; font-weight: 600; letter-spacing: 0.5px; }
-    #current-scene-name { font-size: 0.9rem; color: #d4af37; font-weight: 400; }
-
-    /* Bottom Control Bar */
-    #bottom-dock {
-      position: absolute;
-      bottom: 24px; left: 50%;
-      transform: translateX(-50%);
-      display: flex; gap: 12px;
-      z-index: 1000;
-    }
-    .hud-btn {
-      background: rgba(18, 22, 31, 0.85);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      color: #fff;
-      padding: 10px 18px;
-      border-radius: 30px;
-      font-size: 0.85rem;
-      cursor: pointer;
-      backdrop-filter: blur(8px);
-      transition: all 0.2s ease;
-    }
-    .hud-btn:hover { background: #d4af37; color: #111; border-color: #d4af37; }
-
-    /* Interactive Minimap Modal */
-    #map-modal {
-      position: absolute;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      width: 85vw; max-width: 500px;
-      height: 380px;
-      background: rgba(18, 22, 31, 0.95);
-      border-radius: 12px;
-      border: 1px solid rgba(212, 175, 55, 0.3);
-      box-shadow: 0 20px 40px rgba(0,0,0,0.6);
-      display: none; flex-direction: column;
-      z-index: 2000; overflow: hidden;
-    }
-    #map-header {
-      padding: 14px 20px;
-      display: flex; justify-content: space-between;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      color: #fff; font-size: 0.95rem; font-weight: 500;
-    }
-    #close-map { cursor: pointer; color: #aaa; }
-    #map-body { position: relative; flex: 1; background: #0b0d13; overflow: hidden; }
-    #map-img { width: 100%; height: 100%; object-fit: contain; opacity: 0.75; }
-    
-    .map-pin {
-      position: absolute;
-      width: 14px; height: 14px;
-      background: #d4af37;
-      border: 2px solid #ffffff;
-      border-radius: 50%;
-      transform: translate(-50%, -50%);
-      cursor: pointer;
-      box-shadow: 0 0 10px #d4af37;
-    }
-    .map-pin.active { background: #2ecc71; box-shadow: 0 0 12px #2ecc71; }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <!-- 2D Overlay Interface -->
-  <div id="top-bar">
-    <div>
-      <div id="project-title">Street & Market Walkthrough</div>
-      <div id="current-scene-name">Loading...</div>
+  <!-- ================= 1. WELCOME SCREEN ================= -->
+  <section id="welcome-screen">
+    <div class="welcome-header">
+      <h1 data-i18n="title">Market Street Architectural Walkthrough</h1>
+      <p data-i18n="subtitle">Urban Redesign & Street Revitalization | Virtual Reality Experience</p>
+    </div>
+
+    <div class="welcome-footer">
+      <button id="btn-start" class="btn-start" data-i18n="start">START TOUR</button>
+    </div>
+  </section>
+
+  <!-- ================= 2. SITE / SCENE TITLE BADGE ================= -->
+  <div id="scene-indicator">
+    <span id="current-scene-title">Pedestrian Street</span>
+  </div>
+
+  <!-- ================= 3. LEFT TRANSLUCENT SIDEBAR ================= -->
+  <nav id="sidebar-menu">
+    <button class="menu-item" id="btn-home" title="Home View">
+      <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+      <span data-i18n="menu_home">Home</span>
+    </button>
+
+    <button class="menu-item" id="btn-siteplan" title="Site Plan">
+      <svg viewBox="0 0 24 24"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon><line x1="8" y1="2" x2="8" y2="18"></line><line x1="16" y1="6" x2="16" y2="22"></line></svg>
+      <span data-i18n="menu_plan">Site Plan</span>
+    </button>
+
+    <button class="menu-item" id="btn-vr" title="Enter VR Mode">
+      <svg viewBox="0 0 24 24"><path d="M4 7h16a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2h-3l-2.5-3h-5L7 17H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2z"></path><circle cx="8" cy="12" r="1.5"></circle><circle cx="16" cy="12" r="1.5"></circle></svg>
+      <span data-i18n="menu_vr">VR Mode</span>
+    </button>
+
+    <button class="menu-item" id="btn-lang" title="Toggle Language">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+      <span id="lang-label">EN / TE</span>
+    </button>
+  </nav>
+
+  <!-- ================= 4. SITE PLAN MODAL OVERLAY ================= -->
+  <div id="siteplan-modal" class="hidden">
+    <div class="modal-content">
+      <button class="btn-close" id="btn-close-plan">&times;</button>
+      <h2 style="margin-bottom: 12px;" data-i18n="siteplan_title">Urban Master Plan</h2>
+      <p style="color: var(--text-sub); margin-bottom: 20px;" data-i18n="siteplan_desc">Select a station marker below to jump directly to that vantage point.</p>
+      <div style="border: 2px dashed rgba(255,255,255,0.2); padding: 40px 20px; border-radius: 12px;">
+        <button class="btn-start" style="padding: 8px 16px; font-size: 0.8rem; margin: 5px;" onclick="switchScene('node-1'); document.getElementById('siteplan-modal').classList.add('hidden');">Station 1: Pedestrian Area</button>
+        <button class="btn-start" style="padding: 8px 16px; font-size: 0.8rem; margin: 5px;" onclick="switchScene('node-2'); document.getElementById('siteplan-modal').classList.add('hidden');">Station 2: Bike Crossing</button>
+      </div>
     </div>
   </div>
 
-  <div id="bottom-dock">
-    <button class="hud-btn" id="btn-map">🗺️ Masterplan Map</button>
-  </div>
+  <!-- ================= 5. A-FRAME WEBXR 3D SCENE ================= -->
+  <a-scene embedded loading-screen="dotsColor: #2ecc71; backgroundColor: #0b0f14" vr-mode-ui="enabled: false">
+    
+    <!-- 360 Panorama Projection Sphere -->
+    <a-sky id="skybox" radius="100" rotation="0 0 0"></a-sky>
 
-  <!-- Minimap Drawer -->
-  <div id="map-modal">
-    <div id="map-header">
-      <span>Masterplan Vantage Points</span>
-      <span id="close-map">✕</span>
-    </div>
-    <div id="map-body">
-      <!-- Optional layout map: fallback neutral background if image missing -->
-      <img id="map-img" src="assets/map.png" onerror="this.style.display='none'" />
-      <div id="pins-container"></div>
-    </div>
-  </div>
+    <!-- Waypoint Container -->
+    <a-entity id="waypoint-group"></a-entity>
 
-  <!-- A-Frame WebXR Scene -->
-  <a-scene loading-screen="dotsColor: #d4af37; backgroundColor: #0b0d13">
-    <!-- Sky Sphere for 360 Equirectangular Image -->
-    <a-sky id="sky" radius="100" rotation="0 -90 0"></a-sky>
-
-    <!-- Hotspot Entities Group -->
-    <a-entity id="hotspot-group"></a-entity>
-
-    <!-- Camera Rig + Meta Quest Controller Raycasters -->
+    <!-- Camera Rig & Controls -->
     <a-entity id="rig" position="0 1.6 0">
-      <a-camera id="cam" look-controls="pointerLockEnabled: false">
-        <!-- Reticle cursor for desktop gaze or non-controller interactions -->
+      <a-camera id="head" look-controls="pointerLockEnabled: false">
         <a-cursor
           id="cursor"
           geometry="primitive: ring; radiusInner: 0.015; radiusOuter: 0.025"
-          material="color: #ffffff; shader: flat; opacity: 0.7"
+          material="color: #ffffff; shader: flat; opacity: 0.8"
           animation__fuse="property: scale; startEvents: fusing; easing: easeInCubic; dur: 1200; from: 1 1 1; to: 0.2 0.2 0.2"
           raycaster="objects: .clickable">
         </a-cursor>
       </a-camera>
 
-      <!-- Quest Right & Left Hand Laser Controls -->
-      <a-entity laser-controls="hand: right" raycaster="objects: .clickable; lineColor: #d4af37; lineOpacity: 0.7"></a-entity>
-      <a-entity laser-controls="hand: left" raycaster="objects: .clickable; lineColor: #d4af37; lineOpacity: 0.7"></a-entity>
+      <!-- Meta Quest Laser Pointers -->
+      <a-entity laser-controls="hand: right" raycaster="objects: .clickable; lineColor: #2ecc71; lineOpacity: 0.8"></a-entity>
+      <a-entity laser-controls="hand: left" raycaster="objects: .clickable; lineColor: #2ecc71; lineOpacity: 0.8"></a-entity>
     </a-entity>
   </a-scene>
 
+  <!-- ================= 6. JAVASCRIPT CONTROLLER ================= -->
   <script>
-    let tour = [];
+    const translations = {
+      en: {
+        title: "Market Street Architectural Walkthrough",
+        subtitle: "Urban Redesign & Street Revitalization | Virtual Reality Experience",
+        start: "START TOUR",
+        menu_home: "Home",
+        menu_plan: "Site Plan",
+        menu_vr: "VR Mode",
+        siteplan_title: "Urban Master Plan",
+        siteplan_desc: "Select a station marker below to jump directly to that vantage point."
+      },
+      te: {
+        title: "మార్కెట్ వీధి ఆర్కిటెక్చరల్ వాక్‌త్రూ",
+        subtitle: "పట్టణ పునఃరూపకల్పన & వీధి అభివృద్ధి | వర్చువల్ రియాలిటీ అనుభవం",
+        start: "ప్రారంభించండి",
+        menu_home: "హోమ్",
+        menu_plan: "ప్లాన్",
+        menu_vr: "విఆర్ మోడ్",
+        siteplan_title: "పట్టణ మాస్టర్ ప్లాన్",
+        siteplan_desc: "ఆ ప్రదేశాన్ని చూడటానికి క్రింది స్టేషన్‌ను ఎంచుకోండి."
+      }
+    };
+
+    let currentLang = 'en';
+    let tourData = [];
     let activeSceneId = null;
 
-    const sky = document.querySelector('#sky');
-    const hotspotGroup = document.querySelector('#hotspot-group');
-    const sceneTitle = document.querySelector('#current-scene-name');
-    const mapModal = document.querySelector('#map-modal');
-    const btnMap = document.querySelector('#btn-map');
-    const closeMap = document.querySelector('#close-map');
-    const pinsContainer = document.querySelector('#pins-container');
-
-    // UI Event Listeners
-    btnMap.addEventListener('click', () => { mapModal.style.display = 'flex'; });
-    closeMap.addEventListener('click', () => { mapModal.style.display = 'none'; });
+    const sky = document.querySelector('#skybox');
+    const waypointGroup = document.querySelector('#waypoint-group');
+    const currentSceneTitle = document.querySelector('#current-scene-title');
+    const aScene = document.querySelector('a-scene');
 
     async function init() {
       try {
-        const res = await fetch('scenes.json');
-        tour = await res.json();
-        if (tour.length > 0) {
-          setupMinimapPins();
-          loadScene(tour[0].id);
+        const response = await fetch('street-data.json');
+        const data = await response.json();
+        tourData = data.scenes;
+        if (tourData.length > 0) {
+          activeSceneId = tourData[0].id;
         }
       } catch (err) {
-        console.error("Unable to load scenes.json. Ensure file exists and GitHub Pages is active.", err);
+        console.error("Error loading tour data:", err);
       }
     }
 
-    function setupMinimapPins() {
-      pinsContainer.innerHTML = '';
-      tour.forEach(s => {
-        if (s.mapCoords) {
-          const pin = document.createElement('div');
-          pin.className = 'map-pin';
-          pin.id = `pin-${s.id}`;
-          pin.style.top = s.mapCoords.top;
-          pin.style.left = s.mapCoords.left;
-          pin.title = s.name;
-          pin.addEventListener('click', () => {
-            mapModal.style.display = 'none';
-            loadScene(s.id);
-          });
-          pinsContainer.appendChild(pin);
-        }
-      });
-    }
-
-    function loadScene(sceneId) {
-      const scene = tour.find(s => s.id === sceneId);
+    function switchScene(sceneId) {
+      const scene = tourData.find(s => s.id === sceneId);
       if (!scene) return;
       activeSceneId = sceneId;
 
-      sceneTitle.innerText = scene.name;
-
-      // Update minimap active pin
-      document.querySelectorAll('.map-pin').forEach(pin => pin.classList.remove('active'));
-      const activePin = document.querySelector(`#pin-${sceneId}`);
-      if (activePin) activePin.classList.add('active');
-
-      // 300ms Dip-to-black fade to prevent motion sickness
       sky.setAttribute('animation__fadeout', {
         property: 'material.opacity',
         to: 0,
-        dur: 250,
-        easing: 'easeInQuad'
+        dur: 300,
+        easing: 'easeInOutQuad'
       });
 
       setTimeout(() => {
         sky.setAttribute('src', scene.image);
-        renderHotspots(scene.hotspots || []);
-        
+        currentSceneTitle.innerText = scene.name[currentLang];
+        renderWaypoints(scene.waypoints);
+
         sky.setAttribute('animation__fadein', {
           property: 'material.opacity',
           to: 1,
           dur: 300,
-          easing: 'easeOutQuad'
+          easing: 'easeInOutQuad'
         });
-      }, 250);
+      }, 300);
     }
 
-    function renderHotspots(hotspots) {
-      hotspotGroup.innerHTML = '';
+    function renderWaypoints(waypoints) {
+      waypointGroup.innerHTML = '';
+      if (!waypoints) return;
 
-      hotspots.forEach(h => {
-        const entity = document.createElement('a-entity');
-        entity.setAttribute('position', h.position);
+      waypoints.forEach(wp => {
+        const wpEntity = document.createElement('a-entity');
+        wpEntity.setAttribute('position', wp.position);
+        
+        wpEntity.innerHTML = `
+          <a-ring 
+            class="clickable" 
+            radius-inner="0.3" 
+            radius-outer="0.6" 
+            color="#2ecc71" 
+            rotation="-90 0 0" 
+            material="opacity: 0.85; transparent: true">
+          </a-ring>
+          <a-text 
+            value="${wp.label[currentLang]}" 
+            position="0 0.8 0" 
+            align="center" 
+            scale="0.9 0.9 0.9" 
+            color="#ffffff" 
+            look-at="#head">
+          </a-text>
+        `;
 
-        if (h.type === 'navigation') {
-          // Navigation Chevron / Disc (Sintra Floor Waypoint)
-          entity.innerHTML = `
-            <a-ring class="clickable" radius-inner="0.3" radius-outer="0.5" rotation="-90 0 0" color="#d4af37" material="opacity: 0.85; transparent: true"></a-ring>
-            <a-text value="${h.label}" align="center" position="0 0.8 0" scale="0.9 0.9 0.9" color="#ffffff" look-at="#cam"></a-text>
-          `;
-          entity.querySelector('.clickable').addEventListener('click', () => loadScene(h.target));
-        } else if (h.type === 'info') {
-          // Info Pin + Expandable In-World Spatial Card
-          entity.setAttribute('look-at', '#cam');
-          entity.innerHTML = `
-            <a-circle class="clickable pin-btn" radius="0.25" color="#ffffff" material="opacity: 0.9; transparent: true">
-              <a-text value="i" align="center" position="0 0 0.05" color="#111" scale="1.4 1.4 1.4" bold="true"></a-text>
-            </a-circle>
-            <a-plane class="clickable info-card" visible="false" position="0 0.9 0.05" width="2.2" height="1.0" color="#12161f" material="opacity: 0.92; transparent: true">
-              <a-text value="${h.title}" position="0 0.25 0.05" align="center" width="2.0" color="#d4af37" bold="true"></a-text>
-              <a-text value="${h.text}" position="0 -0.15 0.05" align="center" width="1.9" color="#ffffff"></a-text>
-            </a-plane>
-          `;
+        wpEntity.querySelector('.clickable').addEventListener('click', () => {
+          switchScene(wp.target);
+        });
 
-          const pinBtn = entity.querySelector('.pin-btn');
-          const card = entity.querySelector('.info-card');
-          pinBtn.addEventListener('click', () => {
-            const isVisible = card.getAttribute('visible');
-            card.setAttribute('visible', !isVisible);
-          });
-        }
-
-        hotspotGroup.appendChild(entity);
+        waypointGroup.appendChild(wpEntity);
       });
     }
 
-    window.addEventListener('DOMContentLoaded', init);
-  </script>
-</body>
-</html>
+    function updateLanguage(lang) {
+      currentLang = lang;
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (translations[lang][key]) {
+          el.innerText = translations[lang][key];
+        }
+      });
 
-    window.addEventListener('DOMContentLoaded', initializeTour);
+      if (activeSceneId) {
+        const scene = tourData.find(s => s.id === activeSceneId);
+        if (scene) {
+          currentSceneTitle.innerText = scene.name[lang];
+          renderWaypoints(scene.waypoints);
+        }
+      }
+    }
+
+    // UI Event Handlers
+    document.getElementById('btn-start').addEventListener('click', () => {
+      document.getElementById('welcome-screen').classList.add('hidden');
+      if (activeSceneId) switchScene(activeSceneId);
+    });
+
+    document.getElementById('btn-home').addEventListener('click', () => {
+      if (tourData.length > 0) switchScene(tourData[0].id);
+    });
+
+    document.getElementById('btn-siteplan').addEventListener('click', () => {
+      document.getElementById('siteplan-modal').classList.remove('hidden');
+    });
+
+    document.getElementById('btn-close-plan').addEventListener('click', () => {
+      document.getElementById('siteplan-modal').classList.add('hidden');
+    });
+
+    document.getElementById('btn-vr').addEventListener('click', () => {
+      // Trigger WebXR Immersive Session for Meta Quest
+      if (aScene.enterVR) {
+        aScene.enterVR();
+      }
+    });
+
+    document.getElementById('btn-lang').addEventListener('click', () => {
+      const nextLang = currentLang === 'en' ? 'te' : 'en';
+      updateLanguage(nextLang);
+    });
+
+    window.addEventListener('DOMContentLoaded', init);
   </script>
 </body>
 </html>
