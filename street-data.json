@@ -1,46 +1,40 @@
-[
-  {
-    "id": "market-entrance",
-    "name": "Market Entrance & Pedestrian Walk",
-    "image": "assets/panos/pano1.jpg",
-    "mapCoords": { "top": "75%", "left": "45%" },
-    "hotspots": [
-      {
-        "type": "navigation",
-        "target": "central-square",
-        "position": "0 0.1 -6",
-        "label": "Walk to Central Square"
+{
+  "scenes": [
+    {
+      "id": "node-1",
+      "name": {
+        "en": "Pedestrian Street & Active Frontage",
+        "te": "పాదచారుల వీధి & క్రియాశీల ప్రాంతం"
       },
-      {
-        "type": "info",
-        "position": "-3 1.6 -4",
-        "title": "Permeable Paving & Shading",
-        "text": "Recycled timber trellis paired with permeable pavers to reduce heat island effect."
-      }
-    ]
-  },
-  {
-    "id": "central-square",
-    "name": "Central Plaza & Street Stalls",
-    "image": "assets/panos/pano2.jpg",
-    "mapCoords": { "top": "40%", "left": "50%" },
-    "hotspots": [
-      {
-        "type": "navigation",
-        "target": "market-entrance",
-        "position": "0 0.1 6",
-        "label": "Back to Entrance"
+      "image": "assets/panos/station-1-pedestrian-zone.jpg",
+      "waypoints": [
+        {
+          "target": "node-2",
+          "position": "0 0.1 -6",
+          "label": {
+            "en": "Proceed to Market Crossing",
+            "te": "మార్కెట్ క్రాసింగ్ వైపు వెళ్ళండి"
+          }
+        }
+      ]
+    },
+    {
+      "id": "node-2",
+      "name": {
+        "en": "Market Crossing & Cycle Corridor",
+        "te": "మార్కెట్ క్రాసింగ్ & సైకిల్ కారిడార్"
       },
-      {
-        "type": "info",
-        "position": "3.5 1.5 -3",
-        "title": "Modular Vendor Pods",
-        "text": "Flexible retail stalls designed for rapid weekend market assembly."
-      }
-    ]
-  }
-]
-      }
-    ]
-  }
-]
+      "image": "assets/panos/station-2-bike-corridor.jpg",
+      "waypoints": [
+        {
+          "target": "node-1",
+          "position": "0 0.1 6",
+          "label": {
+            "en": "Back to Walkway",
+            "te": "పాదచారుల మార్గానికి తిరిగి వెళ్ళండి"
+          }
+        }
+      ]
+    }
+  ]
+}
