@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>Architectural Walkthrough | 360 VR</title>
+  <title>Sardar Vallabhai Patel Market | 360 VR</title>
   
   <!-- A-Frame VR Framework -->
   <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
@@ -11,7 +11,7 @@
 
   <style>
     :root {
-      --bg-glass: rgba(15, 23, 42, 0.75);
+      --bg-glass: rgba(15, 23, 42, 0.82);
       --border-glass: rgba(255, 255, 255, 0.2);
       --accent: #2ecc71;
       --text-main: #ffffff;
@@ -40,15 +40,19 @@
     #welcome-screen {
       position: absolute;
       inset: 0;
-      z-index: 1000;
-      background: 
-        linear-gradient(180deg, rgba(10, 15, 25, 0.75) 0%, rgba(10, 15, 25, 0.25) 50%, rgba(0, 0, 0, 0.9) 100%),
-        url('welcome-hero.jpg') center center / cover no-repeat;
+      z-index: 2000; /* Highest priority to cover all HUDs */
+      background-color: #0b0f14;
+      background-image: 
+        linear-gradient(180deg, rgba(10, 15, 25, 0.7) 0%, rgba(10, 15, 25, 0.3) 50%, rgba(0, 0, 0, 0.9) 100%),
+        url('./welcome-hero.jpg');
+      background-position: center center;
+      background-repeat: no-repeat;
+      background-size: cover;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       align-items: center;
-      padding: 50px 24px;
+      padding: 60px 24px;
       text-align: center;
       transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.8s;
     }
@@ -61,37 +65,36 @@
 
     .welcome-header {
       background: var(--bg-glass);
-      padding: 24px 36px;
+      padding: 28px 42px;
       border-radius: 20px;
       border: 1px solid var(--border-glass);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      max-width: 720px;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
-      animation: fadeInDown 0.9s ease;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      max-width: 780px;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.7);
     }
 
     .welcome-header h1 {
-      font-size: 2.1rem;
+      font-size: 2.3rem;
       letter-spacing: 2px;
       text-transform: uppercase;
       font-weight: 700;
-      text-shadow: 0 4px 14px rgba(0,0,0,0.8);
+      line-height: 1.25;
+      text-shadow: 0 4px 16px rgba(0,0,0,0.9);
     }
 
     .welcome-header p {
       color: var(--text-sub);
       margin-top: 10px;
-      font-size: 1rem;
-      letter-spacing: 0.8px;
-      line-height: 1.5;
+      font-size: 0.95rem;
+      letter-spacing: 1.5px;
+      text-transform: lowercase;
     }
 
     .welcome-footer {
       width: 100%;
       display: flex;
       justify-content: center;
-      animation: fadeInUp 0.9s ease;
     }
 
     .btn-start {
@@ -131,10 +134,14 @@
       -webkit-backdrop-filter: blur(16px);
       border-radius: 20px;
       padding: 14px 8px;
-      display: flex;
+      display: none; /* Hidden on welcome screen by default */
       flex-direction: column;
       gap: 14px;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    #sidebar-menu.visible {
+      display: flex;
     }
 
     .menu-item {
@@ -188,6 +195,11 @@
       font-size: 0.9rem;
       font-weight: 500;
       letter-spacing: 0.5px;
+      display: none; /* Hidden until tour starts */
+    }
+
+    #scene-indicator.visible {
+      display: block;
     }
 
     /* ================= SITE PLAN MODAL ================= */
@@ -231,24 +243,15 @@
       font-size: 1.6rem;
       cursor: pointer;
     }
-
-    @keyframes fadeInDown {
-      from { opacity: 0; transform: translateY(-20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
   </style>
 </head>
 <body>
 
-  <!-- 1. WELCOME SCREEN -->
+  <!-- ================= 1. WELCOME SCREEN ================= -->
   <section id="welcome-screen">
     <div class="welcome-header">
-      <h1 data-i18n="title">Architectural Spatial Walkthrough</h1>
-      <p data-i18n="subtitle">Virtual Reality Experience | Historic Colonnade & Atrium</p>
+      <h1 data-i18n="title">Sardar Vallabhai Patel Market</h1>
+      <p data-i18n="subtitle">virtual reality experience</p>
     </div>
 
     <div class="welcome-footer">
@@ -256,12 +259,12 @@
     </div>
   </section>
 
-  <!-- 2. SCENE TITLE BADGE -->
+  <!-- ================= 2. ACTIVE VIEW TITLE ================= -->
   <div id="scene-indicator">
     <span id="current-scene-title">Historic Colonnade Corridor</span>
   </div>
 
-  <!-- 3. TRANSLUCENT LEFT MENU -->
+  <!-- ================= 3. SINTRA-STYLE LEFT SIDEBAR ================= -->
   <nav id="sidebar-menu">
     <button class="menu-item" id="btn-home" title="Home View">
       <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
@@ -284,7 +287,7 @@
     </button>
   </nav>
 
-  <!-- 4. SITE PLAN MODAL -->
+  <!-- ================= 4. SITE PLAN MODAL ================= -->
   <div id="siteplan-modal" class="hidden">
     <div class="modal-content">
       <button class="btn-close" id="btn-close-plan">&times;</button>
@@ -297,16 +300,16 @@
     </div>
   </div>
 
-  <!-- 5. A-FRAME 360 WEBXR SCENE -->
+  <!-- ================= 5. A-FRAME 360 WEBXR SCENE ================= -->
   <a-scene embedded loading-screen="dotsColor: #2ecc71; backgroundColor: #0a0e14" vr-mode-ui="enabled: false">
     
-    <!-- 360 Panorama Projection -->
+    <!-- 360 Panorama Projection Sphere -->
     <a-sky id="skybox" radius="100" rotation="0 -90 0"></a-sky>
 
-    <!-- Waypoint Container -->
+    <!-- Hotspot Ring Container -->
     <a-entity id="waypoint-group"></a-entity>
 
-    <!-- Camera Rig & Headset Controls -->
+    <!-- Camera Rig & Controls -->
     <a-entity id="rig" position="0 1.6 0">
       <a-camera id="head" look-controls="pointerLockEnabled: false">
         <a-cursor
@@ -318,18 +321,60 @@
         </a-cursor>
       </a-camera>
 
-      <!-- Meta Quest Raycasters -->
+      <!-- Meta Quest Controllers -->
       <a-entity laser-controls="hand: right" raycaster="objects: .clickable; lineColor: #2ecc71; lineOpacity: 0.85"></a-entity>
       <a-entity laser-controls="hand: left" raycaster="objects: .clickable; lineColor: #2ecc71; lineOpacity: 0.85"></a-entity>
     </a-entity>
   </a-scene>
 
-  <!-- 6. APPLICATION LOGIC -->
+  <!-- ================= 6. EMBEDDED TOUR LOGIC ================= -->
   <script>
+    // Embedded Scene Data (Direct relative file paths in root repo)
+    const tourData = [
+      {
+        id: "corridor",
+        name: {
+          en: "Historic Colonnade Corridor",
+          te: "చారిత్రక స్తంభాల కారిడార్"
+        },
+        image: "corridor.jpg",
+        rotation: "0 -90 0",
+        waypoints: [
+          {
+            target: "courtyard",
+            position: "0 0.2 -6",
+            label: {
+              en: "Enter Central Atrium",
+              te: "సెంట్రల్ కోర్ట్‌యార్డ్‌లోకి వెళ్లండి"
+            }
+          }
+        ]
+      },
+      {
+        id: "courtyard",
+        name: {
+          en: "Multi-Level Timber Atrium",
+          te: "మల్టీ లెవల్ టింబర్ కోర్ట్‌యార్డ్"
+        },
+        image: "courtyard.png",
+        rotation: "0 0 0",
+        waypoints: [
+          {
+            target: "corridor",
+            position: "0 0.2 5",
+            label: {
+              en: "Return to Colonnade",
+              te: "కారిడార్‌కు తిరిగి వెళ్ళండి"
+            }
+          }
+        ]
+      }
+    ];
+
     const translations = {
       en: {
-        title: "Architectural Spatial Walkthrough",
-        subtitle: "Virtual Reality Experience | Historic Colonnade & Atrium",
+        title: "Sardar Vallabhai Patel Market",
+        subtitle: "virtual reality experience",
         start: "START TOUR",
         menu_home: "Home",
         menu_plan: "Site Plan",
@@ -338,8 +383,8 @@
         siteplan_desc: "Jump directly to any architectural zone below:"
       },
       te: {
-        title: "ఆర్కిటెక్చరల్ స్పేషియల్ వాక్‌త్రూ",
-        subtitle: "వర్చువల్ రియాలిటీ అనుభవం | చారిత్రక కారిడార్ & కోర్ట్‌యార్డ్",
+        title: "సర్దార్ వల్లభాయ్ పటేల్ మార్కెట్",
+        subtitle: "వర్చువల్ రియాలిటీ అనుభవం",
         start: "ప్రారంభించండి",
         menu_home: "హోమ్",
         menu_plan: "ప్లాన్",
@@ -350,26 +395,14 @@
     };
 
     let currentLang = 'en';
-    let tourData = [];
-    let activeSceneId = null;
+    let activeSceneId = "corridor";
 
     const sky = document.querySelector('#skybox');
     const waypointGroup = document.querySelector('#waypoint-group');
     const currentSceneTitle = document.querySelector('#current-scene-title');
     const aScene = document.querySelector('a-scene');
-
-    async function init() {
-      try {
-        const response = await fetch('street-data.json');
-        const data = await response.json();
-        tourData = data.scenes;
-        if (tourData.length > 0) {
-          activeSceneId = tourData[0].id;
-        }
-      } catch (err) {
-        console.error("Error loading JSON manifest:", err);
-      }
-    }
+    const sidebar = document.querySelector('#sidebar-menu');
+    const indicator = document.querySelector('#scene-indicator');
 
     function switchScene(sceneId) {
       const scene = tourData.find(s => s.id === sceneId);
@@ -442,23 +475,23 @@
         }
       });
 
-      if (activeSceneId) {
-        const scene = tourData.find(s => s.id === activeSceneId);
-        if (scene) {
-          currentSceneTitle.innerText = scene.name[lang];
-          renderWaypoints(scene.waypoints);
-        }
+      const scene = tourData.find(s => s.id === activeSceneId);
+      if (scene) {
+        currentSceneTitle.innerText = scene.name[lang];
+        renderWaypoints(scene.waypoints);
       }
     }
 
-    // Event Bindings
+    // Start Tour & Reveal Navigation HUD
     document.getElementById('btn-start').addEventListener('click', () => {
       document.getElementById('welcome-screen').classList.add('hidden');
-      if (activeSceneId) switchScene(activeSceneId);
+      sidebar.classList.add('visible');
+      indicator.classList.add('visible');
+      switchScene(activeSceneId);
     });
 
     document.getElementById('btn-home').addEventListener('click', () => {
-      if (tourData.length > 0) switchScene(tourData[0].id);
+      switchScene('corridor');
     });
 
     document.getElementById('btn-siteplan').addEventListener('click', () => {
@@ -479,8 +512,6 @@
       const nextLang = currentLang === 'en' ? 'te' : 'en';
       updateLanguage(nextLang);
     });
-
-    window.addEventListener('DOMContentLoaded', init);
   </script>
 </body>
 </html>
