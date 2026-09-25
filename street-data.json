@@ -1,0 +1,44 @@
+[
+  {
+    "id": "node-1",
+    "name": "Sidewalk & Active Frontage",
+    "image": "assets/panos/station-1-pedestrian-zone.jpg",
+    "rotation": "0 0 0",
+    "waypoints": [
+      {
+        "target": "node-2",
+        "position": "0 0.1 -6",
+        "rotation": "-90 0 0",
+        "label": "Proceed North: Cycle Track"
+      }
+    ],
+    "annotations": [
+      {
+        "position": "-3.5 1.5 -4",
+        "title": "Tactile Paving & Buffer",
+        "desc": "1.8 m clear pedestrian zone with integrated bioswale buffer."
+      }
+    ]
+  },
+  {
+    "id": "node-2",
+    "name": "Protected Bike Corridor & Bus Stop",
+    "image": "assets/panos/station-2-bike-corridor.jpg",
+    "rotation": "0 10 0",
+    "waypoints": [
+      {
+        "target": "node-1",
+        "position": "0 0.1 6",
+        "rotation": "90 0 0",
+        "label": "Back to Sidewalk"
+      }
+    ],
+    "annotations": [
+      {
+        "position": "2.8 1.4 -3",
+        "title": "Floating Bus Stop",
+        "desc": "Bypass cycle track behind passenger waiting area to prevent conflicts."
+      }
+    ]
+  }
+]
