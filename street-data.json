@@ -1,43 +1,45 @@
 [
   {
-    "id": "node-1",
-    "name": "Sidewalk & Active Frontage",
-    "image": "assets/panos/station-1-pedestrian-zone.jpg",
-    "rotation": "0 0 0",
-    "waypoints": [
+    "id": "market-entrance",
+    "name": "Market Entrance & Pedestrian Walk",
+    "image": "assets/panos/pano1.jpg",
+    "mapCoords": { "top": "75%", "left": "45%" },
+    "hotspots": [
       {
-        "target": "node-2",
+        "type": "navigation",
+        "target": "central-square",
         "position": "0 0.1 -6",
-        "rotation": "-90 0 0",
-        "label": "Proceed North: Cycle Track"
-      }
-    ],
-    "annotations": [
+        "label": "Walk to Central Square"
+      },
       {
-        "position": "-3.5 1.5 -4",
-        "title": "Tactile Paving & Buffer",
-        "desc": "1.8 m clear pedestrian zone with integrated bioswale buffer."
+        "type": "info",
+        "position": "-3 1.6 -4",
+        "title": "Permeable Paving & Shading",
+        "text": "Recycled timber trellis paired with permeable pavers to reduce heat island effect."
       }
     ]
   },
   {
-    "id": "node-2",
-    "name": "Protected Bike Corridor & Bus Stop",
-    "image": "assets/panos/station-2-bike-corridor.jpg",
-    "rotation": "0 10 0",
-    "waypoints": [
+    "id": "central-square",
+    "name": "Central Plaza & Street Stalls",
+    "image": "assets/panos/pano2.jpg",
+    "mapCoords": { "top": "40%", "left": "50%" },
+    "hotspots": [
       {
-        "target": "node-1",
+        "type": "navigation",
+        "target": "market-entrance",
         "position": "0 0.1 6",
-        "rotation": "90 0 0",
-        "label": "Back to Sidewalk"
-      }
-    ],
-    "annotations": [
+        "label": "Back to Entrance"
+      },
       {
-        "position": "2.8 1.4 -3",
-        "title": "Floating Bus Stop",
-        "desc": "Bypass cycle track behind passenger waiting area to prevent conflicts."
+        "type": "info",
+        "position": "3.5 1.5 -3",
+        "title": "Modular Vendor Pods",
+        "text": "Flexible retail stalls designed for rapid weekend market assembly."
+      }
+    ]
+  }
+]
       }
     ]
   }
