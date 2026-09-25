@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Urban Street Redesign | VR Walkthrough</title>
+  <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+  <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>
+</head>
+<body>
+  <a-scene loading-screen="dotsColor: #2ecc71; backgroundColor: #111111">
+    
+    <!-- Asset Cache -->
+    <a-assets>
+      <img id="waypoint-icon" src="https://upload.wikimedia.org/wikipedia/commons/e/ea/VisualEditor_-_Icon_-_Target.svg">
+    </a-assets>
+
+    <!-- 360 Environment Sphere -->
+    <a-sky id="street-sky" radius="100" rotation="0 0 0"></a-sky>
+
+    <!-- Interactive Layer Groups -->
+    <a-entity id="waypoint-group"></a-entity>
+    <a-entity id="annotation-group"></a-entity>
+
+    <!-- Camera Rig & Meta Quest Controllers -->
+    <a-entity id="rig" position="0 1.6 0">
+      <a-camera id="head" look-controls="pointerLockEnabled: false">
+        <!-- Gaze Reticle for non-controller use -->
+        <a-cursor
+          id="reticle"
+          geometry="primitive: ring; radiusInner: 0.015; radiusOuter: 0.025"
+          material="color: #ffffff; shader: flat; opacity: 0.8"
+          animation__fuse="property: scale; startEvents: fusing; easing: easeInCubic; dur: 1200; from: 1 1 1; to: 0.2 0.2 0.2"
+          raycaster="objects: .clickable">
+        </a-cursor>
+      </a-camera>
+
+      <!-- Quest Right & Left Hand Laser Raycasters -->
+      <a-entity laser-controls="hand: right" raycaster="objects: .clickable; lineColor: #2ecc71; lineOpacity: 0.8"></a-entity>
+      <a-entity laser-controls="hand: left" raycaster="objects: .clickable; lineColor: #2ecc71; lineOpacity: 0.8"></a-entity>
+    </a-entity>
+  </a-scene>
+
+  <script>
+    let streetTour = [];
+    const sky = document.querySelector('#street-sky');
+    const waypointsContainer = document.querySelector('#waypoint-group');
+    const annotationsContainer = document.querySelector('#annotation-group');
+
+    async function initializeTour() {
+      try {
+        const res = await fetch('street-data.json');
+        streetTour = await res.json();
+        if (streetTour.length > 0) {
+          switchStation(streetTour[0].id);
+        }
+      } catch (err) {
+        console.error('Error loading street-data.json:', err);
+      }
+    }
+
+    function switchStation(stationId) {
+      const station = streetTour.find(s => s.id === stationId);
+      if (!station) return;
+
+      // 1. Smooth fade to black
+      sky.setAttribute('animation__fadeout', {
+        property: 'material.opacity',
+        to: 0,
+        dur: 300,
+        easing: 'easeInOutQuad'
+      });
+
+      setTimeout(() => {
+        // 2. Change image texture & rotation
+        sky.setAttribute('src', station.image);
+        sky.setAttribute('rotation', station.rotation || '0 0 0');
+
+        // 3. Render Ground Waypoints and Design Callouts
+        renderWaypoints(station.waypoints || []);
+        renderAnnotations(station.annotations || []);
+
+        // 4. Fade back in
+        sky.setAttribute('animation__fadein', {
+          property: 'material.opacity',
+          to: 1,
+          dur: 300,
+          easing: 'easeInOutQuad'
+        });
+      }, 300);
+    }
+
+    function renderWaypoints(waypoints) {
+      waypointsContainer.innerHTML = '';
+      waypoints.forEach(wp => {
+        const wpEntity = document.createElement('a-entity');
+        wpEntity.setAttribute('position', wp.position);
+        
+        // Horizontal ground ring for urban wayfinding
+        wpEntity.innerHTML = `
+          <a-ring 
+            class="clickable" 
+            radius-inner="0.35" 
+            radius-outer="0.65" 
+            color="#2ecc71" 
+            rotation="-90 0 0" 
+            material="opacity: 0.85; transparent: true">
+          </a-ring>
+          <a-text 
+            value="${wp.label}" 
+            position="0 0.8 0" 
+            align="center" 
+            scale="0.9 0.9 0.9" 
+            color="#ffffff" 
+            look-at="#head">
+          </a-text>
+        `;
+
+        wpEntity.querySelector('.clickable').addEventListener('click', () => {
+          switchStation(wp.target);
+        });
+
+        waypointsContainer.appendChild(wpEntity);
+      });
+    }
+
+    function renderAnnotations(annotations) {
+      annotationsContainer.innerHTML = '';
+      annotations.forEach(ann => {
+        const annEntity = document.createElement('a-entity');
+        annEntity.setAttribute('position', ann.position);
+        annEntity.setAttribute('look-at', '#head');
+
+        // Floating Street Furniture / Design Specification Card
+        annEntity.innerHTML = `
+          <a-plane class="clickable" width="2.2" height="1.0" color="#1e272e" material="opacity: 0.88; transparent: true">
+            <a-text value="${ann.title}" position="0 0.25 0.05" align="center" width="2.0" color="#2ecc71" bold="true"></a-text>
+            <a-text value="${ann.desc}" position="0 -0.15 0.05" align="center" width="1.9" color="#f5f6fa"></a-text>
+          </a-plane>
+        `;
+
+        annotationsContainer.appendChild(annEntity);
+      });
+    }
+
+    window.addEventListener('DOMContentLoaded', initializeTour);
+  </script>
+</body>
+</html>
