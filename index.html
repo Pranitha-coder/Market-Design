@@ -11,9 +11,10 @@
 
   <style>
     :root {
-      --bg-glass: rgba(15, 23, 42, 0.85);
+      --bg-glass: rgba(15, 23, 42, 0.88);
       --border-glass: rgba(255, 255, 255, 0.2);
       --accent: #2ecc71;
+      --accent-hover: #27ae60;
       --text-main: #ffffff;
       --text-sub: #cbd5e1;
       --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -36,24 +37,22 @@
       color: var(--text-main);
     }
 
-    /* ================= 1. WELCOME SCREEN ================= */
+    /* ================= 1. WELCOME SCREEN (RIGHT-ALIGNED HERO BANNER) ================= */
     #welcome-screen {
       position: absolute;
       inset: 0;
       z-index: 2000;
       background-color: #0b0f14;
       background-image: 
-        linear-gradient(180deg, rgba(10, 15, 25, 0.75) 0%, rgba(10, 15, 25, 0.25) 50%, rgba(0, 0, 0, 0.95) 100%),
+        linear-gradient(90deg, rgba(10, 15, 25, 0.3) 0%, rgba(10, 15, 25, 0.85) 100%),
         url('./welcome-hero.jpg');
       background-position: center center;
       background-repeat: no-repeat;
       background-size: cover;
       display: flex;
-      flex-direction: column;
-      justify-content: space-between;
+      justify-content: flex-end;
       align-items: center;
-      padding: 60px 24px;
-      text-align: center;
+      padding: 40px 8%;
       transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.8s;
     }
 
@@ -63,65 +62,163 @@
       pointer-events: none;
     }
 
-    .welcome-header {
+    .welcome-card {
       background: var(--bg-glass);
-      padding: 28px 42px;
-      border-radius: 20px;
+      padding: 48px 42px;
+      border-radius: 24px;
       border: 1px solid var(--border-glass);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      max-width: 820px;
-      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      max-width: 540px;
+      width: 100%;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8);
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      text-align: left;
+      animation: fadeInRight 0.8s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    .welcome-header h1 {
-      font-size: 2.3rem;
+    .eyebrow-tag {
+      font-size: 0.75rem;
       letter-spacing: 2px;
       text-transform: uppercase;
       font-weight: 700;
-      line-height: 1.25;
-      text-shadow: 0 4px 16px rgba(0,0,0,0.9);
+      color: var(--accent);
+      margin-bottom: 12px;
     }
 
-    .welcome-header p {
-      color: var(--text-sub);
-      margin-top: 10px;
-      font-size: 1rem;
+    .welcome-card h1 {
+      font-size: 2.2rem;
       letter-spacing: 1.5px;
-      text-transform: lowercase;
+      text-transform: uppercase;
+      font-weight: 800;
+      line-height: 1.25;
+      color: #ffffff;
+      text-shadow: 0 4px 18px rgba(0,0,0,0.9);
+      margin-bottom: 14px;
     }
 
-    .welcome-footer {
-      width: 100%;
-      display: flex;
-      justify-content: center;
+    .welcome-card p {
+      color: var(--text-sub);
+      font-size: 0.95rem;
+      letter-spacing: 1.2px;
+      text-transform: lowercase;
+      line-height: 1.6;
+      margin-bottom: 32px;
     }
 
     .btn-start {
-      padding: 18px 56px;
-      font-size: 1.1rem;
+      padding: 16px 44px;
+      font-size: 1rem;
       font-weight: 700;
-      letter-spacing: 2.5px;
+      letter-spacing: 2px;
       text-transform: uppercase;
       color: #fff;
-      background: var(--bg-glass);
+      background: rgba(46, 204, 113, 0.15);
       border: 1.5px solid var(--accent);
       border-radius: 40px;
       cursor: pointer;
       box-shadow: 0 0 25px rgba(46, 204, 113, 0.4);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
       transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
     }
 
     .btn-start:hover {
       background: var(--accent);
       color: #0b0f14;
-      box-shadow: 0 0 38px rgba(46, 204, 113, 0.8);
-      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 0 40px rgba(46, 204, 113, 0.85);
+      transform: translateY(-2px);
     }
 
-    /* ================= 2. LEFT TRANSLUCENT MENU ================= */
+    /* ================= 2. TOP RIGHT INFO BUTTON & PANEL ================= */
+    #info-btn {
+      position: absolute;
+      top: 24px;
+      right: 24px;
+      z-index: 500;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: var(--bg-glass);
+      border: 1.5px solid var(--accent);
+      color: #ffffff;
+      font-size: 1.3rem;
+      font-weight: 700;
+      font-style: italic;
+      font-family: Georgia, "Times New Roman", serif;
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      box-shadow: 0 0 20px rgba(46, 204, 113, 0.35);
+      transition: all 0.25s ease;
+    }
+
+    #info-btn.visible {
+      display: flex;
+    }
+
+    #info-btn:hover, #info-btn.open {
+      background: var(--accent);
+      color: #0b0f14;
+      box-shadow: 0 0 30px rgba(46, 204, 113, 0.7);
+    }
+
+    #info-panel {
+      position: absolute;
+      top: 86px;
+      right: 24px;
+      z-index: 500;
+      width: min(360px, calc(100% - 48px));
+      background: var(--bg-glass);
+      border: 1px solid var(--border-glass);
+      border-radius: 20px;
+      padding: 22px 24px;
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.7);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-8px);
+      transition: all 0.25s ease;
+    }
+
+    #info-panel.open {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    #info-panel h3 {
+      font-size: 1.1rem;
+      margin-bottom: 6px;
+      color: var(--accent);
+    }
+
+    #info-panel .info-tag {
+      font-size: 0.72rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--text-sub);
+      margin-bottom: 10px;
+      display: block;
+    }
+
+    #info-panel p {
+      font-size: 0.92rem;
+      line-height: 1.6;
+      color: var(--text-sub);
+      user-select: text;
+    }
+
+    /* ================= 3. LEFT TRANSLUCENT MENU ================= */
     #sidebar-menu {
       position: absolute;
       left: 20px;
@@ -180,29 +277,7 @@
       transform: scale(1.05);
     }
 
-    /* ================= 3. TOP SCENE BADGE ================= */
-    #scene-indicator {
-      position: absolute;
-      top: 24px;
-      left: 24px;
-      z-index: 500;
-      background: var(--bg-glass);
-      border: 1px solid var(--border-glass);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      padding: 10px 22px;
-      border-radius: 30px;
-      font-size: 0.9rem;
-      font-weight: 500;
-      letter-spacing: 0.5px;
-      display: none;
-    }
-
-    #scene-indicator.visible {
-      display: block;
-    }
-
-    /* ================= 4. SITE PLAN MODAL (INTERACTIVE CARDS) ================= */
+    /* ================= 4. SITE PLAN MODAL ================= */
     #siteplan-modal {
       position: absolute;
       inset: 0;
@@ -227,7 +302,7 @@
       border: 1px solid var(--border-glass);
       padding: 32px;
       border-radius: 24px;
-      max-width: 780px;
+      max-width: 900px;
       width: 92%;
       text-align: center;
       position: relative;
@@ -248,12 +323,12 @@
 
     .plan-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 20px;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
       margin-top: 24px;
     }
 
-    @media (max-width: 640px) {
+    @media (max-width: 768px) {
       .plan-grid {
         grid-template-columns: 1fr;
       }
@@ -279,30 +354,36 @@
 
     .plan-card img {
       width: 100%;
-      height: 140px;
+      height: 130px;
       object-fit: cover;
       border-bottom: 1px solid var(--border-glass);
+      display: block;
     }
 
     .plan-card-body {
-      padding: 14px 16px;
+      padding: 12px 14px;
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
 
     .plan-card-body h3 {
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       font-weight: 600;
       color: #fff;
     }
 
     .plan-card-body span {
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       color: var(--accent);
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 1px;
+    }
+
+    @keyframes fadeInRight {
+      from { opacity: 0; transform: translateX(40px); }
+      to { opacity: 1; transform: translateX(0); }
     }
   </style>
 </head>
@@ -310,22 +391,26 @@
 
   <!-- ================= 1. WELCOME SCREEN ================= -->
   <section id="welcome-screen">
-    <div class="welcome-header">
+    <div class="welcome-card">
+      <span class="eyebrow-tag" data-i18n="eyebrow">Virtual Reality Walkthrough</span>
       <h1 data-i18n="title">Sardar Vallabhai Patel Market</h1>
       <p data-i18n="subtitle">virtual reality experience</p>
-    </div>
-
-    <div class="welcome-footer">
-      <button id="btn-start" class="btn-start" data-i18n="start">START TOUR</button>
+      <button id="btn-start" class="btn-start">
+        <span data-i18n="start">START TOUR</span>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+      </button>
     </div>
   </section>
 
-  <!-- ================= 2. SCENE TITLE BADGE ================= -->
-  <div id="scene-indicator">
-    <span id="current-scene-title">Historic Colonnade Corridor</span>
+  <!-- ================= 2. TOP RIGHT INFO BUTTON & PANEL ================= -->
+  <button id="info-btn" title="Information">i</button>
+  <div id="info-panel">
+    <span class="info-tag" data-i18n="info_tag">About this place</span>
+    <h3 id="info-title">Street Approach</h3>
+    <p id="info-text">Overview of the market approach corridor.</p>
   </div>
 
-  <!-- ================= 3. SINTRA-STYLE LEFT SIDEBAR ================= -->
+  <!-- ================= 3. LEFT SIDEBAR NAVIGATION ================= -->
   <nav id="sidebar-menu">
     <button class="menu-item" id="btn-home" title="Home View">
       <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
@@ -348,7 +433,7 @@
     </button>
   </nav>
 
-  <!-- ================= 4. INTERACTIVE SITE PLAN MODAL ================= -->
+  <!-- ================= 4. SITE PLAN MODAL ================= -->
   <div id="siteplan-modal" class="hidden">
     <div class="modal-content">
       <button class="btn-close" id="btn-close-plan">&times;</button>
@@ -356,20 +441,29 @@
       <p style="color: var(--text-sub); margin-top: 6px; font-size: 0.9rem;" data-i18n="siteplan_desc">Select an architectural zone to teleport directly into the 360 space:</p>
       
       <div class="plan-grid">
-        <!-- Corridor Card -->
-        <div class="plan-card" onclick="selectFromSitePlan('corridor')">
-          <img src="corridor.jpg" alt="Historic Colonnade Corridor">
+        <!-- Street Approach (panorama_5.jpg) -->
+        <div class="plan-card" onclick="selectFromSitePlan('street')">
+          <img src="panorama_5.jpg" alt="Street Approach & Corridor">
           <div class="plan-card-body">
-            <h3 id="card-corridor-title">Historic Colonnade</h3>
+            <h3 id="card-street-title">Street Approach</h3>
             <span>Teleport &rarr;</span>
           </div>
         </div>
 
-        <!-- Courtyard Card -->
+        <!-- Timber Atrium (Courtyard.png) -->
         <div class="plan-card" onclick="selectFromSitePlan('courtyard')">
-          <img src="courtyard.png" alt="Multi-Level Timber Courtyard">
+          <img src="Courtyard.png" alt="Multi-Level Timber Atrium">
           <div class="plan-card-body">
             <h3 id="card-courtyard-title">Timber Atrium</h3>
+            <span>Teleport &rarr;</span>
+          </div>
+        </div>
+
+        <!-- Colonnade (Corridor.jpg) -->
+        <div class="plan-card" onclick="selectFromSitePlan('corridor')">
+          <img src="Corridor.jpg" alt="Historic Colonnade Corridor">
+          <div class="plan-card-body">
+            <h3 id="card-corridor-title">Colonnade</h3>
             <span>Teleport &rarr;</span>
           </div>
         </div>
@@ -381,7 +475,7 @@
   <a-scene embedded loading-screen="dotsColor: #2ecc71; backgroundColor: #0a0e14" vr-mode-ui="enabled: false">
     
     <!-- 360 Panorama Projection Sphere -->
-    <a-sky id="skybox" radius="100" rotation="0 -90 0"></a-sky>
+    <a-sky id="skybox" radius="100" rotation="0 0 0"></a-sky>
 
     <!-- Hotspot Ring Container -->
     <a-entity id="waypoint-group"></a-entity>
@@ -406,23 +500,26 @@
 
   <!-- ================= 6. APPLICATION CONTROLLER ================= -->
   <script>
-    // Embedded Scene Manifest (Direct relative file paths in repo root)
     const tourData = [
       {
-        id: "corridor",
+        id: "street",
         name: {
-          en: "Historic Colonnade Corridor",
-          te: "చారిత్రక స్తంభాల కారిడార్"
+          en: "Street Approach & Outer Corridor",
+          te: "వీధి మార్గం & వెలుపలి కారిడార్"
         },
-        image: "corridor.jpg",
-        rotation: "0 -90 0",
+        info: {
+          en: "Wide vehicular approach road and pedestrian median leading up to the main market complex. Designed with traffic calming curves and road edge planters.",
+          te: "ప్రధాన మార్కెట్ సముదాయానికి దారితీసే విశాలమైన రహదారి మరియు పాదచారుల మీడియన్. ట్రాఫిక్ నిరోధక వంపులు మరియు మొక్కలతో రూపొందించబడింది."
+        },
+        image: "panorama_5.jpg",
+        rotation: "0 0 0",
         waypoints: [
           {
             target: "courtyard",
-            position: "0 0.2 -6",
+            position: "5 0.15 -8",
             label: {
-              en: "Enter Timber Atrium",
-              te: "టింబర్ కోర్ట్‌యార్డ్‌లోకి వెళ్లండి"
+              en: "Enter Central Atrium",
+              te: "సెంట్రల్ కోర్ట్‌యార్డ్‌లోకి వెళ్లండి"
             }
           }
         ]
@@ -433,15 +530,50 @@
           en: "Multi-Level Timber Atrium",
           te: "మల్టీ లెవల్ టింబర్ కోర్ట్‌యార్డ్"
         },
-        image: "courtyard.png",
+        info: {
+          en: "The central multi-level atrium framed in engineered timber. Open circulation decks surround the courtyard bringing daylight and social activity to the heart of the complex.",
+          te: "కలపతో నిర్మించిన బహుళ అంతస్తుల కేంద్ర కోర్ట్‌యార్డ్. చుట్టూ ఉన్న గ్యాలరీలు మార్కెట్ మధ్యలో సహజ వెలుతురును మరియు సందడిని నింపుతాయి."
+        },
+        image: "Courtyard.png",
         rotation: "0 0 0",
         waypoints: [
           {
             target: "corridor",
-            position: "0 0.2 5",
+            position: "0 0.15 5",
             label: {
-              en: "Return to Colonnade",
-              te: "కారిడార్‌కు తిరిగి వెళ్ళండి"
+              en: "Enter Historic Colonnade",
+              te: "చారిత్రక కారిడార్‌లోకి వెళ్లండి"
+            }
+          },
+          {
+            target: "street",
+            position: "0 0.15 -6",
+            label: {
+              en: "Return to Street Approach",
+              te: "వీధి మార్గానికి తిరిగి వెళ్ళండి"
+            }
+          }
+        ]
+      },
+      {
+        id: "corridor",
+        name: {
+          en: "Historic Colonnade Corridor",
+          te: "చారిత్రక స్తంభాల కారిడార్"
+        },
+        info: {
+          en: "A heritage colonnaded walkway lined with stone columns. The semi-covered pergola roof filters dynamic shade across patterned floor tiles.",
+          te: "రాతి స్తంభాలతో కూడిన వారసత్వ కారిడార్ నడక మార్గం. సెమీ-కవర్డ్ పెర్గోలా పైకప్పు నేలపై అందమైన నీడలను పరుస్తుంది."
+        },
+        image: "Corridor.jpg",
+        rotation: "0 -90 0",
+        waypoints: [
+          {
+            target: "courtyard",
+            position: "0 0.15 -6",
+            label: {
+              en: "Enter Central Atrium",
+              te: "సెంట్రల్ కోర్ట్‌యార్డ్‌లోకి వెళ్లండి"
             }
           }
         ]
@@ -450,6 +582,7 @@
 
     const translations = {
       en: {
+        eyebrow: "Virtual Reality Walkthrough",
         title: "Sardar Vallabhai Patel Market",
         subtitle: "virtual reality experience",
         start: "START TOUR",
@@ -458,10 +591,13 @@
         menu_vr: "VR Mode",
         siteplan_title: "Vantage Point Directory",
         siteplan_desc: "Select an architectural zone to teleport directly into the 360 space:",
-        corridor_short: "Historic Colonnade",
-        courtyard_short: "Timber Atrium"
+        info_tag: "About this place",
+        street_short: "Street Approach",
+        courtyard_short: "Timber Atrium",
+        corridor_short: "Colonnade"
       },
       te: {
+        eyebrow: "వర్చువల్ రియాలిటీ వాక్‌త్రూ",
         title: "సర్దార్ వల్లభాయ్ పటేల్ మార్కెట్",
         subtitle: "వర్చువల్ రియాలిటీ అనుభవం",
         start: "ప్రారంభించండి",
@@ -470,28 +606,29 @@
         menu_vr: "విఆర్ మోడ్",
         siteplan_title: "ప్రదేశాల డైరెక్టరీ",
         siteplan_desc: "ఆ ప్రదేశాన్ని చూడటానికి క్రింది జోన్‌ను ఎంచుకోండి:",
-        corridor_short: "చారిత్రక కారిడార్",
-        courtyard_short: "టింబర్ కోర్ట్‌యార్డ్"
+        info_tag: "ఈ ప్రదేశం గురించి",
+        street_short: "వీధి మార్గం",
+        courtyard_short: "టింబర్ కోర్ట్‌యార్డ్",
+        corridor_short: "చారిత్రక కారిడార్"
       }
     };
 
     let currentLang = 'en';
-    let activeSceneId = "corridor";
+    let activeSceneId = "street";
 
     const sky = document.querySelector('#skybox');
     const waypointGroup = document.querySelector('#waypoint-group');
-    const currentSceneTitle = document.querySelector('#current-scene-title');
     const aScene = document.querySelector('a-scene');
     const sidebar = document.querySelector('#sidebar-menu');
-    const indicator = document.querySelector('#scene-indicator');
     const sitePlanModal = document.querySelector('#siteplan-modal');
+    const infoBtn = document.querySelector('#info-btn');
+    const infoPanel = document.querySelector('#info-panel');
 
     function switchScene(sceneId) {
       const scene = tourData.find(s => s.id === sceneId);
       if (!scene) return;
       activeSceneId = sceneId;
 
-      // Dip-to-black fade prevents nausea during texture swap
       sky.setAttribute('animation__fadeout', {
         property: 'material.opacity',
         to: 0,
@@ -502,7 +639,7 @@
       setTimeout(() => {
         sky.setAttribute('src', scene.image);
         sky.setAttribute('rotation', scene.rotation || '0 0 0');
-        currentSceneTitle.innerText = scene.name[currentLang];
+        renderInfo(scene);
         renderWaypoints(scene.waypoints);
 
         sky.setAttribute('animation__fadein', {
@@ -549,7 +686,11 @@
       });
     }
 
-    // Interactive Site Plan Teleport Handler
+    function renderInfo(scene) {
+      document.querySelector('#info-title').innerText = scene.name[currentLang];
+      document.querySelector('#info-text').innerText = scene.info[currentLang];
+    }
+
     window.selectFromSitePlan = function(sceneId) {
       sitePlanModal.classList.add('hidden');
       switchScene(sceneId);
@@ -564,13 +705,13 @@
         }
       });
 
-      // Update Card Titles
-      document.querySelector('#card-corridor-title').innerText = translations[lang].corridor_short;
+      document.querySelector('#card-street-title').innerText = translations[lang].street_short;
       document.querySelector('#card-courtyard-title').innerText = translations[lang].courtyard_short;
+      document.querySelector('#card-corridor-title').innerText = translations[lang].corridor_short;
 
       const scene = tourData.find(s => s.id === activeSceneId);
       if (scene) {
-        currentSceneTitle.innerText = scene.name[lang];
+        renderInfo(scene);
         renderWaypoints(scene.waypoints);
       }
     }
@@ -579,12 +720,23 @@
     document.getElementById('btn-start').addEventListener('click', () => {
       document.getElementById('welcome-screen').classList.add('hidden');
       sidebar.classList.add('visible');
-      indicator.classList.add('visible');
+      infoBtn.classList.add('visible');
       switchScene(activeSceneId);
     });
 
     document.getElementById('btn-home').addEventListener('click', () => {
-      switchScene('corridor');
+      sitePlanModal.classList.add('hidden');
+      infoPanel.classList.remove('open');
+      infoBtn.classList.remove('open', 'visible');
+      sidebar.classList.remove('visible');
+      waypointGroup.innerHTML = '';
+      activeSceneId = 'street';
+      document.getElementById('welcome-screen').classList.remove('hidden');
+    });
+
+    infoBtn.addEventListener('click', () => {
+      const open = infoPanel.classList.toggle('open');
+      infoBtn.classList.toggle('open', open);
     });
 
     document.getElementById('btn-siteplan').addEventListener('click', () => {
