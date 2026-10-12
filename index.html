@@ -277,7 +277,7 @@
       transform: scale(1.05);
     }
 
-    /* ================= 4. SITE PLAN MODAL ================= */
+    /* ================= 4. SITE PLAN MODAL & INTERACTIVE MAP ================= */
     #siteplan-modal {
       position: absolute;
       inset: 0;
@@ -300,9 +300,9 @@
     .modal-content {
       background: var(--bg-glass);
       border: 1px solid var(--border-glass);
-      padding: 32px;
+      padding: 30px;
       border-radius: 24px;
-      max-width: 900px;
+      max-width: 960px;
       width: 92%;
       text-align: center;
       position: relative;
@@ -321,64 +321,76 @@
       line-height: 1;
     }
 
-    .plan-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
-      margin-top: 24px;
-    }
-
-    @media (max-width: 768px) {
-      .plan-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    .plan-card {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid var(--border-glass);
+    .plan-viewport {
+      position: relative;
+      margin-top: 20px;
       border-radius: 16px;
       overflow: hidden;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      display: flex;
-      flex-direction: column;
-      text-align: left;
+      border: 1px solid var(--border-glass);
+      background: #111827;
+      line-height: 0;
     }
 
-    .plan-card:hover {
-      border-color: var(--accent);
-      transform: translateY(-4px);
-      box-shadow: 0 12px 25px rgba(46, 204, 113, 0.25);
-    }
-
-    .plan-card img {
+    .plan-viewport img {
       width: 100%;
-      height: 130px;
-      object-fit: cover;
-      border-bottom: 1px solid var(--border-glass);
+      max-height: 65vh;
+      object-fit: contain;
       display: block;
     }
 
-    .plan-card-body {
-      padding: 12px 14px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+    /* Clickable Waypoint Pins on the Plan */
+    .plan-pin {
+      position: absolute;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--accent);
+      border: 3px solid #ffffff;
+      transform: translate(-50%, -50%);
+      cursor: pointer;
+      box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.7);
+      animation: pinPulse 1.8s infinite;
+      transition: transform 0.25s ease;
+      padding: 0;
+      z-index: 10;
     }
 
-    .plan-card-body h3 {
-      font-size: 0.9rem;
-      font-weight: 600;
-      color: #fff;
+    .plan-pin:hover {
+      transform: translate(-50%, -50%) scale(1.3);
+      background: #ffffff;
+      border-color: var(--accent);
     }
 
-    .plan-card-body span {
-      font-size: 0.72rem;
-      color: var(--accent);
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 1px;
+    .pin-label {
+      position: absolute;
+      bottom: 38px;
+      left: 50%;
+      transform: translateX(-50%);
+      white-space: nowrap;
+      background: var(--bg-glass);
+      border: 1px solid var(--border-glass);
+      color: #ffffff;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      line-height: 1;
+      padding: 7px 14px;
+      border-radius: 20px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+    }
+
+    .plan-pin:hover .pin-label {
+      opacity: 1;
+      transform: translateX(-50%) translateY(-4px);
+    }
+
+    @keyframes pinPulse {
+      0%   { box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.8); }
+      70%  { box-shadow: 0 0 0 16px rgba(46, 204, 113, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(46, 204, 113, 0); }
     }
 
     @keyframes fadeInRight {
@@ -433,40 +445,28 @@
     </button>
   </nav>
 
-  <!-- ================= 4. SITE PLAN MODAL ================= -->
+  <!-- ================= 4. INTERACTIVE SITE PLAN MODAL ================= -->
   <div id="siteplan-modal" class="hidden">
     <div class="modal-content">
       <button class="btn-close" id="btn-close-plan">&times;</button>
-      <h2 data-i18n="siteplan_title">Vantage Point Directory</h2>
-      <p style="color: var(--text-sub); margin-top: 6px; font-size: 0.9rem;" data-i18n="siteplan_desc">Select an architectural zone to teleport directly into the 360 space:</p>
+      <h2 data-i18n="siteplan_title">Site Plan</h2>
+      <p style="color: var(--text-sub); margin-top: 6px; font-size: 0.9rem;" data-i18n="siteplan_desc">Click any highlighted area on the site plan to teleport directly into the 360 space:</p>
       
-      <div class="plan-grid">
-        <!-- Cafe (Cafe.png) -->
-        <div class="plan-card" onclick="selectFromSitePlan('cafe')">
-          <img src="Cafe.png" alt="Cafe">
-          <div class="plan-card-body">
-            <h3 id="card-cafe-title">Cafe</h3>
-            <span>Teleport &rarr;</span>
-          </div>
-        </div>
+      <div class="plan-viewport">
+        <img id="siteplan-img" src="Site plan.jpg" alt="Site Plan">
+        
+        <!-- Interactive Waypoint Pins Positioned on the Plan -->
+        <button class="plan-pin" style="left: 69%; top: 30%;" onclick="selectFromSitePlan('cafe')" title="Cafe">
+          <span class="pin-label" id="pin-cafe-title">Cafe</span>
+        </button>
 
-        <!-- Charpoy (Charpoy.jpg) -->
-        <div class="plan-card" onclick="selectFromSitePlan('charpoy')">
-          <img src="Charpoy.jpg" alt="Charpoy">
-          <div class="plan-card-body">
-            <h3 id="card-charpoy-title">Charpoy</h3>
-            <span>Teleport &rarr;</span>
-          </div>
-        </div>
+        <button class="plan-pin" style="left: 54%; top: 32%;" onclick="selectFromSitePlan('charpoy')" title="Charpoy">
+          <span class="pin-label" id="pin-charpoy-title">Charpoy</span>
+        </button>
 
-        <!-- Totlot (Totlot.jpg) -->
-        <div class="plan-card" onclick="selectFromSitePlan('totlot')">
-          <img src="Totlot.jpg" alt="Totlot">
-          <div class="plan-card-body">
-            <h3 id="card-totlot-title">Totlot</h3>
-            <span>Teleport &rarr;</span>
-          </div>
-        </div>
+        <button class="plan-pin" style="left: 85%; top: 30%;" onclick="selectFromSitePlan('totlot')" title="Totlot">
+          <span class="pin-label" id="pin-totlot-title">Totlot</span>
+        </button>
       </div>
     </div>
   </div>
@@ -620,8 +620,8 @@
         menu_home: "Home",
         menu_plan: "Site Plan",
         menu_vr: "VR Mode",
-        siteplan_title: "Vantage Point Directory",
-        siteplan_desc: "Select an architectural zone to teleport directly into the 360 space:",
+        siteplan_title: "Site Plan",
+        siteplan_desc: "Click any highlighted area on the site plan to teleport directly into the 360 space:",
         info_tag: "About this place",
         cafe_short: "Cafe",
         charpoy_short: "Charpoy",
@@ -635,8 +635,8 @@
         menu_home: "హోమ్",
         menu_plan: "ప్లాన్",
         menu_vr: "విఆర్ మోడ్",
-        siteplan_title: "ప్రదేశాల డైరెక్టరీ",
-        siteplan_desc: "ఆ ప్రదేశాన్ని చూడటానికి క్రింది జోన్‌ను ఎంచుకోండి:",
+        siteplan_title: "సైట్ ప్లాన్",
+        siteplan_desc: "ఆ ప్రదేశం యొక్క 360° వీక్షణ కోసం సైట్ ప్లాన్‌పై గుర్తును నొక్కండి:",
         info_tag: "ఈ ప్రదేశం గురించి",
         cafe_short: "కేఫ్",
         charpoy_short: "చార్‌పాయ్",
@@ -736,9 +736,9 @@
         }
       });
 
-      document.querySelector('#card-cafe-title').innerText = translations[lang].cafe_short;
-      document.querySelector('#card-charpoy-title').innerText = translations[lang].charpoy_short;
-      document.querySelector('#card-totlot-title').innerText = translations[lang].totlot_short;
+      document.querySelector('#pin-cafe-title').innerText = translations[lang].cafe_short;
+      document.querySelector('#pin-charpoy-title').innerText = translations[lang].charpoy_short;
+      document.querySelector('#pin-totlot-title').innerText = translations[lang].totlot_short;
 
       const scene = tourData.find(s => s.id === activeSceneId);
       if (scene) {
