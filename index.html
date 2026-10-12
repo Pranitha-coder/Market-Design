@@ -277,7 +277,7 @@
       transform: scale(1.05);
     }
 
-    /* ================= 4. SITE PLAN MODAL & INTERACTIVE MAP ================= */
+    /* ================= 4. SITE PLAN MODAL WITH INTERACTIVE MAP ================= */
     #siteplan-modal {
       position: absolute;
       inset: 0;
@@ -300,10 +300,10 @@
     .modal-content {
       background: var(--bg-glass);
       border: 1px solid var(--border-glass);
-      padding: 30px;
+      padding: 30px 32px;
       border-radius: 24px;
-      max-width: 960px;
-      width: 92%;
+      max-width: 860px;
+      width: 94%;
       text-align: center;
       position: relative;
       box-shadow: 0 25px 60px rgba(0,0,0,0.8);
@@ -321,75 +321,77 @@
       line-height: 1;
     }
 
-    .plan-viewport {
+    .interactive-map-container {
       position: relative;
-      margin-top: 20px;
+      width: 100%;
+      margin-top: 18px;
       border-radius: 16px;
       overflow: hidden;
       border: 1px solid var(--border-glass);
-      background: #111827;
-      line-height: 0;
+      background: #000;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
     }
 
-    .plan-viewport img {
+    .interactive-map-container img {
       width: 100%;
-      max-height: 65vh;
+      height: auto;
+      max-height: 60vh;
       object-fit: contain;
       display: block;
     }
 
-    /* Clickable Waypoint Pins on the Plan */
-    .plan-pin {
+    /* Interactive Site Plan Pins */
+    .map-hotspot {
       position: absolute;
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      background: var(--accent);
-      border: 3px solid #ffffff;
       transform: translate(-50%, -50%);
       cursor: pointer;
-      box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.7);
-      animation: pinPulse 1.8s infinite;
-      transition: transform 0.25s ease;
-      padding: 0;
       z-index: 10;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
 
-    .plan-pin:hover {
-      transform: translate(-50%, -50%) scale(1.3);
+    .hotspot-beacon {
+      width: 22px;
+      height: 22px;
+      background: var(--accent);
+      border: 3px solid #ffffff;
+      border-radius: 50%;
+      box-shadow: 0 0 15px var(--accent);
+      animation: beaconPulse 1.8s infinite;
+      transition: transform 0.2s ease;
+    }
+
+    .map-hotspot:hover .hotspot-beacon {
+      transform: scale(1.35);
       background: #ffffff;
       border-color: var(--accent);
     }
 
-    .pin-label {
-      position: absolute;
-      bottom: 38px;
-      left: 50%;
-      transform: translateX(-50%);
-      white-space: nowrap;
-      background: var(--bg-glass);
+    .hotspot-tag {
+      margin-top: 6px;
+      background: rgba(15, 23, 42, 0.92);
       border: 1px solid var(--border-glass);
       color: #ffffff;
-      font-size: 0.8rem;
+      font-size: 0.72rem;
       font-weight: 700;
-      letter-spacing: 0.5px;
-      line-height: 1;
-      padding: 7px 14px;
+      padding: 4px 10px;
       border-radius: 20px;
-      opacity: 0;
+      white-space: nowrap;
       pointer-events: none;
-      transition: opacity 0.2s ease, transform 0.2s ease;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.7);
+      transition: all 0.2s ease;
     }
 
-    .plan-pin:hover .pin-label {
-      opacity: 1;
-      transform: translateX(-50%) translateY(-4px);
+    .map-hotspot:hover .hotspot-tag {
+      background: var(--accent);
+      color: #0b0f14;
+      border-color: var(--accent);
     }
 
-    @keyframes pinPulse {
-      0%   { box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.8); }
-      70%  { box-shadow: 0 0 0 16px rgba(46, 204, 113, 0); }
+    @keyframes beaconPulse {
+      0% { box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.8); }
+      70% { box-shadow: 0 0 0 14px rgba(46, 204, 113, 0); }
       100% { box-shadow: 0 0 0 0 rgba(46, 204, 113, 0); }
     }
 
@@ -449,24 +451,30 @@
   <div id="siteplan-modal" class="hidden">
     <div class="modal-content">
       <button class="btn-close" id="btn-close-plan">&times;</button>
-      <h2 data-i18n="siteplan_title">Site Plan</h2>
-      <p style="color: var(--text-sub); margin-top: 6px; font-size: 0.9rem;" data-i18n="siteplan_desc">Click any highlighted area on the site plan to teleport directly into the 360 space:</p>
+      <h2 data-i18n="siteplan_title">Site Plan Directory</h2>
+      <p style="color: var(--text-sub); margin-top: 6px; font-size: 0.9rem;" data-i18n="siteplan_desc">Click a location on the site plan to teleport directly into the 360 view:</p>
       
-      <div class="plan-viewport">
-        <img id="siteplan-img" src="Site plan.jpg" alt="Site Plan">
-        
-        <!-- Interactive Waypoint Pins Positioned on the Plan -->
-        <button class="plan-pin" style="left: 69%; top: 30%;" onclick="selectFromSitePlan('cafe')" title="Cafe">
-          <span class="pin-label" id="pin-cafe-title">Cafe</span>
-        </button>
+      <div class="interactive-map-container">
+        <!-- Site Plan Layout Image -->
+        <img src="Site plan.jpg" alt="Site Plan">
 
-        <button class="plan-pin" style="left: 54%; top: 32%;" onclick="selectFromSitePlan('charpoy')" title="Charpoy">
-          <span class="pin-label" id="pin-charpoy-title">Charpoy</span>
-        </button>
+        <!-- Charpoy Zone (Outdoor Cot Seating Court) -->
+        <div class="map-hotspot" style="left: 54%; top: 32%;" onclick="selectFromSitePlan('charpoy')">
+          <div class="hotspot-beacon"></div>
+          <span class="hotspot-tag" id="tag-charpoy">Charpoy</span>
+        </div>
 
-        <button class="plan-pin" style="left: 85%; top: 30%;" onclick="selectFromSitePlan('totlot')" title="Totlot">
-          <span class="pin-label" id="pin-totlot-title">Totlot</span>
-        </button>
+        <!-- Cafe Zone (Main Market Pavilion) -->
+        <div class="map-hotspot" style="left: 64%; top: 26%;" onclick="selectFromSitePlan('cafe')">
+          <div class="hotspot-beacon"></div>
+          <span class="hotspot-tag" id="tag-cafe">Cafe</span>
+        </div>
+
+        <!-- Totlot Zone (Play Area & Trellis Edge) -->
+        <div class="map-hotspot" style="left: 77%; top: 26%;" onclick="selectFromSitePlan('totlot')">
+          <div class="hotspot-beacon"></div>
+          <span class="hotspot-tag" id="tag-totlot">Totlot</span>
+        </div>
       </div>
     </div>
   </div>
@@ -620,8 +628,8 @@
         menu_home: "Home",
         menu_plan: "Site Plan",
         menu_vr: "VR Mode",
-        siteplan_title: "Site Plan",
-        siteplan_desc: "Click any highlighted area on the site plan to teleport directly into the 360 space:",
+        siteplan_title: "Site Plan Directory",
+        siteplan_desc: "Click a location on the site plan to teleport directly into the 360 view:",
         info_tag: "About this place",
         cafe_short: "Cafe",
         charpoy_short: "Charpoy",
@@ -635,8 +643,8 @@
         menu_home: "హోమ్",
         menu_plan: "ప్లాన్",
         menu_vr: "విఆర్ మోడ్",
-        siteplan_title: "సైట్ ప్లాన్",
-        siteplan_desc: "ఆ ప్రదేశం యొక్క 360° వీక్షణ కోసం సైట్ ప్లాన్‌పై గుర్తును నొక్కండి:",
+        siteplan_title: "సైట్ ప్లాన్ డైరెక్టరీ",
+        siteplan_desc: "ఆ ప్రదేశం యొక్క 360 వీక్షణ కోసం సైట్ ప్లాన్‌పై క్లిక్ చేయండి:",
         info_tag: "ఈ ప్రదేశం గురించి",
         cafe_short: "కేఫ్",
         charpoy_short: "చార్‌పాయ్",
@@ -736,9 +744,9 @@
         }
       });
 
-      document.querySelector('#pin-cafe-title').innerText = translations[lang].cafe_short;
-      document.querySelector('#pin-charpoy-title').innerText = translations[lang].charpoy_short;
-      document.querySelector('#pin-totlot-title').innerText = translations[lang].totlot_short;
+      document.querySelector('#tag-cafe').innerText = translations[lang].cafe_short;
+      document.querySelector('#tag-charpoy').innerText = translations[lang].charpoy_short;
+      document.querySelector('#tag-totlot').innerText = translations[lang].totlot_short;
 
       const scene = tourData.find(s => s.id === activeSceneId);
       if (scene) {
