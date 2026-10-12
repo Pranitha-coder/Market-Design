@@ -406,8 +406,8 @@
   <button id="info-btn" title="Information">i</button>
   <div id="info-panel">
     <span class="info-tag" data-i18n="info_tag">About this place</span>
-    <h3 id="info-title">Street Approach</h3>
-    <p id="info-text">Overview of the market approach corridor.</p>
+    <h3 id="info-title">Ariel View</h3>
+    <p id="info-text">Overview of the market complex and surroundings.</p>
   </div>
 
   <!-- ================= 3. LEFT SIDEBAR NAVIGATION ================= -->
@@ -441,29 +441,29 @@
       <p style="color: var(--text-sub); margin-top: 6px; font-size: 0.9rem;" data-i18n="siteplan_desc">Select an architectural zone to teleport directly into the 360 space:</p>
       
       <div class="plan-grid">
-        <!-- Street Approach (panorama_5.jpg) -->
-        <div class="plan-card" onclick="selectFromSitePlan('street')">
-          <img src="panorama_5.jpg" alt="Street Approach & Corridor">
+        <!-- Cafe (Cafe.png) -->
+        <div class="plan-card" onclick="selectFromSitePlan('cafe')">
+          <img src="Cafe.png" alt="Cafe">
           <div class="plan-card-body">
-            <h3 id="card-street-title">Street Approach</h3>
+            <h3 id="card-cafe-title">Cafe</h3>
             <span>Teleport &rarr;</span>
           </div>
         </div>
 
-        <!-- Timber Atrium (Courtyard.png) -->
-        <div class="plan-card" onclick="selectFromSitePlan('courtyard')">
-          <img src="Courtyard.png" alt="Multi-Level Timber Atrium">
+        <!-- Charpoy (Charpoy.jpg) -->
+        <div class="plan-card" onclick="selectFromSitePlan('charpoy')">
+          <img src="Charpoy.jpg" alt="Charpoy">
           <div class="plan-card-body">
-            <h3 id="card-courtyard-title">Timber Atrium</h3>
+            <h3 id="card-charpoy-title">Charpoy</h3>
             <span>Teleport &rarr;</span>
           </div>
         </div>
 
-        <!-- Colonnade (Corridor.jpg) -->
-        <div class="plan-card" onclick="selectFromSitePlan('corridor')">
-          <img src="Corridor.jpg" alt="Historic Colonnade Corridor">
+        <!-- Totlot (Totlot.jpg) -->
+        <div class="plan-card" onclick="selectFromSitePlan('totlot')">
+          <img src="Totlot.jpg" alt="Totlot">
           <div class="plan-card-body">
-            <h3 id="card-corridor-title">Colonnade</h3>
+            <h3 id="card-totlot-title">Totlot</h3>
             <span>Teleport &rarr;</span>
           </div>
         </div>
@@ -502,78 +502,109 @@
   <script>
     const tourData = [
       {
-        id: "street",
+        id: "ariel",
         name: {
-          en: "Street Approach & Outer Corridor",
-          te: "వీధి మార్గం & వెలుపలి కారిడార్"
+          en: "Ariel View",
+          te: "ఏరియల్ వీక్షణ"
         },
         info: {
-          en: "Wide vehicular approach road and pedestrian median leading up to the main market complex. Designed with traffic calming curves and road edge planters.",
-          te: "ప్రధాన మార్కెట్ సముదాయానికి దారితీసే విశాలమైన రహదారి మరియు పాదచారుల మీడియన్. ట్రాఫిక్ నిరోధక వంపులు మరియు మొక్కలతో రూపొందించబడింది."
+          en: "High-angle panoramic view showcasing the entire market site layout, road access, and landscape envelope.",
+          te: "మొత్తం మార్కెట్ స్థల లేఅవుట్, రహదారి ప్రవేశం మరియు ప్రకృతి దృశ్యాన్ని ప్రదర్శించే విశాలమైన ఏరియల్ వీక్షణ."
         },
-        image: "panorama_5.jpg",
+        image: "Ariel View.png",
         rotation: "0 0 0",
         waypoints: [
           {
-            target: "courtyard",
-            position: "5 0.15 -8",
+            target: "cafe",
+            position: "4 0.15 -7",
             label: {
-              en: "Enter Central Atrium",
-              te: "సెంట్రల్ కోర్ట్‌యార్డ్‌లోకి వెళ్లండి"
+              en: "Enter Cafe",
+              te: "కేఫ్‌లోకి వెళ్లండి"
             }
           }
         ]
       },
       {
-        id: "courtyard",
+        id: "cafe",
         name: {
-          en: "Multi-Level Timber Atrium",
-          te: "మల్టీ లెవల్ టింబర్ కోర్ట్‌యార్డ్"
+          en: "Cafe",
+          te: "కేఫ్"
         },
         info: {
-          en: "The central multi-level atrium framed in engineered timber. Open circulation decks surround the courtyard bringing daylight and social activity to the heart of the complex.",
-          te: "కలపతో నిర్మించిన బహుళ అంతస్తుల కేంద్ర కోర్ట్‌యార్డ్. చుట్టూ ఉన్న గ్యాలరీలు మార్కెట్ మధ్యలో సహజ వెలుతురును మరియు సందడిని నింపుతాయి."
+          en: "Indoor-outdoor dining pavilion featuring vibrant red curved structures, overhead structural trusses, and seating zones.",
+          te: "ఎరుపు రంగు నిర్మాణ శైలి మరియు బహిరంగ సీటింగ్‌తో కూడిన డైనింగ్ పెవిలియన్."
         },
-        image: "Courtyard.png",
+        image: "Cafe.png",
         rotation: "0 0 0",
         waypoints: [
           {
-            target: "corridor",
+            target: "charpoy",
             position: "0 0.15 5",
             label: {
-              en: "Enter Historic Colonnade",
-              te: "చారిత్రక కారిడార్‌లోకి వెళ్లండి"
+              en: "Go to Charpoy Area",
+              te: "చార్‌పాయ్ ప్రాంతానికి వెళ్లండి"
             }
           },
           {
-            target: "street",
+            target: "ariel",
             position: "0 0.15 -6",
             label: {
-              en: "Return to Street Approach",
-              te: "వీధి మార్గానికి తిరిగి వెళ్ళండి"
+              en: "Return to Ariel View",
+              te: "ఏరియల్ వీక్షణకు తిరిగి వెళ్ళండి"
             }
           }
         ]
       },
       {
-        id: "corridor",
+        id: "charpoy",
         name: {
-          en: "Historic Colonnade Corridor",
-          te: "చారిత్రక స్తంభాల కారిడార్"
+          en: "Charpoy",
+          te: "చార్‌పాయ్"
         },
         info: {
-          en: "A heritage colonnaded walkway lined with stone columns. The semi-covered pergola roof filters dynamic shade across patterned floor tiles.",
-          te: "రాతి స్తంభాలతో కూడిన వారసత్వ కారిడార్ నడక మార్గం. సెమీ-కవర్డ్ పెర్గోలా పైకప్పు నేలపై అందమైన నీడలను పరుస్తుంది."
+          en: "Outdoor traditional charpoy seating court laid with textured stone pavers under the open sky.",
+          te: "బహిరంగ ఆకాశం క్రింద రాతి పేవర్‌లతో కూడిన సాంప్రదాయ చార్‌పాయ్ సీటింగ్ కోర్ట్."
         },
-        image: "Corridor.jpg",
-        rotation: "0 -90 0",
+        image: "Charpoy.jpg",
+        rotation: "0 0 0",
         waypoints: [
           {
-            target: "courtyard",
+            target: "totlot",
+            position: "5 0.15 -4",
+            label: {
+              en: "Go to Totlot",
+              te: "టాట్‌లాట్‌కు వెళ్లండి"
+            }
+          },
+          {
+            target: "cafe",
+            position: "-5 0.15 -4",
+            label: {
+              en: "Enter Cafe",
+              te: "కేఫ్‌లోకి వెళ్లండి"
+            }
+          }
+        ]
+      },
+      {
+        id: "totlot",
+        name: {
+          en: "Totlot",
+          te: "టాట్‌లాట్"
+        },
+        info: {
+          en: "Shaded children's play park with playground furniture, stepping stone pathways, and tree canopies under arched roof covers.",
+          te: "తోరణాల పైకప్పు కింద ఆట పరికరాలు మరియు నడక మార్గాలతో కూడిన పిల్లల ఆట స్థలం."
+        },
+        image: "Totlot.jpg",
+        rotation: "0 0 0",
+        waypoints: [
+          {
+            target: "charpoy",
             position: "0 0.15 -6",
             label: {
-              en: "Enter Central Atrium",
-              te: "సెంట్రల్ కోర్ట్‌యార్డ్‌లోకి వెళ్లండి"
+              en: "Go to Charpoy Area",
+              te: "చార్‌పాయ్ ప్రాంతానికి వెళ్లండి"
             }
           }
         ]
@@ -592,9 +623,9 @@
         siteplan_title: "Vantage Point Directory",
         siteplan_desc: "Select an architectural zone to teleport directly into the 360 space:",
         info_tag: "About this place",
-        street_short: "Street Approach",
-        courtyard_short: "Timber Atrium",
-        corridor_short: "Colonnade"
+        cafe_short: "Cafe",
+        charpoy_short: "Charpoy",
+        totlot_short: "Totlot"
       },
       te: {
         eyebrow: "వర్చువల్ రియాలిటీ వాక్‌త్రూ",
@@ -607,14 +638,14 @@
         siteplan_title: "ప్రదేశాల డైరెక్టరీ",
         siteplan_desc: "ఆ ప్రదేశాన్ని చూడటానికి క్రింది జోన్‌ను ఎంచుకోండి:",
         info_tag: "ఈ ప్రదేశం గురించి",
-        street_short: "వీధి మార్గం",
-        courtyard_short: "టింబర్ కోర్ట్‌యార్డ్",
-        corridor_short: "చారిత్రక కారిడార్"
+        cafe_short: "కేఫ్",
+        charpoy_short: "చార్‌పాయ్",
+        totlot_short: "టాట్‌లాట్"
       }
     };
 
     let currentLang = 'en';
-    let activeSceneId = "street";
+    let activeSceneId = "ariel";
 
     const sky = document.querySelector('#skybox');
     const waypointGroup = document.querySelector('#waypoint-group');
@@ -705,9 +736,9 @@
         }
       });
 
-      document.querySelector('#card-street-title').innerText = translations[lang].street_short;
-      document.querySelector('#card-courtyard-title').innerText = translations[lang].courtyard_short;
-      document.querySelector('#card-corridor-title').innerText = translations[lang].corridor_short;
+      document.querySelector('#card-cafe-title').innerText = translations[lang].cafe_short;
+      document.querySelector('#card-charpoy-title').innerText = translations[lang].charpoy_short;
+      document.querySelector('#card-totlot-title').innerText = translations[lang].totlot_short;
 
       const scene = tourData.find(s => s.id === activeSceneId);
       if (scene) {
@@ -730,7 +761,7 @@
       infoBtn.classList.remove('open', 'visible');
       sidebar.classList.remove('visible');
       waypointGroup.innerHTML = '';
-      activeSceneId = 'street';
+      activeSceneId = 'ariel';
       document.getElementById('welcome-screen').classList.remove('hidden');
     });
 
