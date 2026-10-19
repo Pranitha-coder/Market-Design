@@ -37,7 +37,7 @@
       color: var(--text-main);
     }
 
-    /* ================= 1. WELCOME SCREEN ================= */
+    /* ================= 1. WELCOME SCREEN (RIGHT-ALIGNED HERO BANNER) ================= */
     #welcome-screen {
       position: absolute;
       inset: 0;
@@ -157,4 +157,637 @@
       justify-content: center;
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
-      box-shadow: 0 0 20px rgba(46, 204, 113, 0
+      box-shadow: 0 0 20px rgba(46, 204, 113, 0.35);
+      transition: all 0.25s ease;
+    }
+
+    #info-btn.visible {
+      display: flex;
+    }
+
+    #info-btn:hover, #info-btn.open {
+      background: var(--accent);
+      color: #0b0f14;
+      box-shadow: 0 0 30px rgba(46, 204, 113, 0.7);
+    }
+
+    #info-panel {
+      position: absolute;
+      top: 86px;
+      right: 24px;
+      z-index: 500;
+      width: min(360px, calc(100% - 48px));
+      background: var(--bg-glass);
+      border: 1px solid var(--border-glass);
+      border-radius: 20px;
+      padding: 22px 24px;
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.7);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-8px);
+      transition: all 0.25s ease;
+    }
+
+    #info-panel.open {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    #info-panel h3 {
+      font-size: 1.1rem;
+      margin-bottom: 6px;
+      color: var(--accent);
+    }
+
+    #info-panel .info-tag {
+      font-size: 0.72rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--text-sub);
+      margin-bottom: 10px;
+      display: block;
+    }
+
+    #info-panel p {
+      font-size: 0.92rem;
+      line-height: 1.6;
+      color: var(--text-sub);
+      user-select: text;
+    }
+
+    /* ================= 3. LEFT TRANSLUCENT MENU ================= */
+    #sidebar-menu {
+      position: absolute;
+      left: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 500;
+      background: var(--bg-glass);
+      border: 1px solid var(--border-glass);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-radius: 20px;
+      padding: 14px 8px;
+      display: none;
+      flex-direction: column;
+      gap: 14px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    #sidebar-menu.visible {
+      display: flex;
+    }
+
+    .menu-item {
+      background: transparent;
+      border: none;
+      color: var(--text-sub);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 10px 12px;
+      min-width: 64px;
+      cursor: pointer;
+      border-radius: 12px;
+      transition: all 0.2s ease;
+    }
+
+    .menu-item svg {
+      width: 22px;
+      height: 22px;
+      stroke: currentColor;
+      stroke-width: 2;
+      fill: none;
+    }
+
+    .menu-item span {
+      font-size: 0.72rem;
+      letter-spacing: 0.5px;
+      font-weight: 500;
+    }
+
+    .menu-item:hover {
+      background: rgba(255, 255, 255, 0.12);
+      color: var(--accent);
+      transform: scale(1.05);
+    }
+
+    /* ================= 4. SITE PLAN MODAL & INTERACTIVE MAP ================= */
+    #siteplan-modal {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.88);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      z-index: 1200;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: opacity 0.3s ease, visibility 0.3s;
+    }
+
+    #siteplan-modal.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .modal-content {
+      background: var(--bg-glass);
+      border: 1px solid var(--border-glass);
+      padding: 30px;
+      border-radius: 24px;
+      max-width: 960px;
+      width: 92%;
+      text-align: center;
+      position: relative;
+      box-shadow: 0 25px 60px rgba(0,0,0,0.8);
+    }
+
+    .btn-close {
+      position: absolute;
+      top: 18px;
+      right: 20px;
+      background: transparent;
+      border: none;
+      color: #fff;
+      font-size: 1.8rem;
+      cursor: pointer;
+      line-height: 1;
+    }
+
+    .plan-viewport {
+      position: relative;
+      margin-top: 20px;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid var(--border-glass);
+      background: #111827;
+      line-height: 0;
+    }
+
+    .plan-viewport img {
+      width: 100%;
+      max-height: 65vh;
+      object-fit: contain;
+      display: block;
+    }
+
+    /* Clickable Waypoint Pins on the Plan */
+    .plan-pin {
+      position: absolute;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--accent);
+      border: 3px solid #ffffff;
+      transform: translate(-50%, -50%);
+      cursor: pointer;
+      box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.7);
+      animation: pinPulse 1.8s infinite;
+      transition: transform 0.25s ease;
+      padding: 0;
+      z-index: 10;
+    }
+
+    .plan-pin:hover {
+      transform: translate(-50%, -50%) scale(1.3);
+      background: #ffffff;
+      border-color: var(--accent);
+    }
+
+    .pin-label {
+      position: absolute;
+      bottom: 38px;
+      left: 50%;
+      transform: translateX(-50%);
+      white-space: nowrap;
+      background: var(--bg-glass);
+      border: 1px solid var(--border-glass);
+      color: #ffffff;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      line-height: 1;
+      padding: 7px 14px;
+      border-radius: 20px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+    }
+
+    .plan-pin:hover .pin-label {
+      opacity: 1;
+      transform: translateX(-50%) translateY(-4px);
+    }
+
+    @keyframes pinPulse {
+      0%   { box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.8); }
+      70%  { box-shadow: 0 0 0 16px rgba(46, 204, 113, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(46, 204, 113, 0); }
+    }
+
+    @keyframes fadeInRight {
+      from { opacity: 0; transform: translateX(40px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ================= 1. WELCOME SCREEN ================= -->
+  <section id="welcome-screen">
+    <div class="welcome-card">
+      <span class="eyebrow-tag" data-i18n="eyebrow">Virtual Reality Walkthrough</span>
+      <h1 data-i18n="title">Sardar Vallabhai Patel Market</h1>
+      <p data-i18n="subtitle">virtual reality experience</p>
+      <button id="btn-start" class="btn-start">
+        <span data-i18n="start">START TOUR</span>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+      </button>
+    </div>
+  </section>
+
+  <!-- ================= 2. TOP RIGHT INFO BUTTON & PANEL ================= -->
+  <button id="info-btn" title="Information">i</button>
+  <div id="info-panel">
+    <span class="info-tag" data-i18n="info_tag">About this place</span>
+    <h3 id="info-title">Ariel View</h3>
+    <p id="info-text">Overview of the market complex and surroundings.</p>
+  </div>
+
+  <!-- ================= 3. LEFT SIDEBAR NAVIGATION ================= -->
+  <nav id="sidebar-menu">
+    <button class="menu-item" id="btn-home" title="Home View">
+      <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+      <span data-i18n="menu_home">Home</span>
+    </button>
+
+    <button class="menu-item" id="btn-siteplan" title="Site Plan">
+      <svg viewBox="0 0 24 24"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon><line x1="8" y1="2" x2="8" y2="18"></line><line x1="16" y1="6" x2="16" y2="22"></line></svg>
+      <span data-i18n="menu_plan">Site Plan</span>
+    </button>
+
+    <button class="menu-item" id="btn-vr" title="Enter VR Mode">
+      <svg viewBox="0 0 24 24"><path d="M4 7h16a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2h-3l-2.5-3h-5L7 17H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2z"></path><circle cx="8" cy="12" r="1.5"></circle><circle cx="16" cy="12" r="1.5"></circle></svg>
+      <span data-i18n="menu_vr">VR Mode</span>
+    </button>
+
+    <button class="menu-item" id="btn-lang" title="Toggle Language">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+      <span id="lang-label">EN / TE</span>
+    </button>
+  </nav>
+
+  <!-- ================= 4. INTERACTIVE SITE PLAN MODAL ================= -->
+  <div id="siteplan-modal" class="hidden">
+    <div class="modal-content">
+      <button class="btn-close" id="btn-close-plan">&times;</button>
+      <h2 data-i18n="siteplan_title">Site Plan</h2>
+      <p style="color: var(--text-sub); margin-top: 6px; font-size: 0.9rem;" data-i18n="siteplan_desc">Click any highlighted area on the site plan to teleport directly into the 360 space:</p>
+      
+      <div class="plan-viewport">
+        <img id="siteplan-img" src="Site plan.jpg" alt="Site Plan">
+        
+        <!-- Interactive Waypoint Pins Positioned on the Plan -->
+        <button class="plan-pin" style="left: 69%; top: 30%;" onclick="selectFromSitePlan('cafe')" title="Cafe">
+          <span class="pin-label" id="pin-cafe-title">Cafe</span>
+        </button>
+
+        <button class="plan-pin" style="left: 54%; top: 32%;" onclick="selectFromSitePlan('charpoy')" title="Charpoy">
+          <span class="pin-label" id="pin-charpoy-title">Charpoy</span>
+        </button>
+
+        <button class="plan-pin" style="left: 85%; top: 30%;" onclick="selectFromSitePlan('totlot')" title="Totlot">
+          <span class="pin-label" id="pin-totlot-title">Totlot</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= 5. A-FRAME 360 WEBXR SCENE ================= -->
+  <a-scene embedded loading-screen="dotsColor: #2ecc71; backgroundColor: #0a0e14" vr-mode-ui="enabled: false">
+    
+    <!-- 360 Panorama Projection Sphere -->
+    <a-sky id="skybox" radius="100" rotation="0 0 0"></a-sky>
+
+    <!-- Hotspot Ring Container -->
+    <a-entity id="waypoint-group"></a-entity>
+
+    <!-- Camera Rig & Meta Quest Laser Controls -->
+    <a-entity id="rig" position="0 1.6 0">
+      <a-camera id="head" look-controls="pointerLockEnabled: false">
+        <a-cursor
+          id="cursor"
+          geometry="primitive: ring; radiusInner: 0.015; radiusOuter: 0.025"
+          material="color: #ffffff; shader: flat; opacity: 0.85"
+          animation__fuse="property: scale; startEvents: fusing; easing: easeInCubic; dur: 1200; from: 1 1 1; to: 0.2 0.2 0.2"
+          raycaster="objects: .clickable">
+        </a-cursor>
+      </a-camera>
+
+      <!-- Quest Controllers -->
+      <a-entity laser-controls="hand: right" raycaster="objects: .clickable; lineColor: #2ecc71; lineOpacity: 0.85"></a-entity>
+      <a-entity laser-controls="hand: left" raycaster="objects: .clickable; lineColor: #2ecc71; lineOpacity: 0.85"></a-entity>
+    </a-entity>
+  </a-scene>
+
+  <!-- ================= 6. APPLICATION CONTROLLER ================= -->
+  <script>
+    const tourData = [
+      {
+        id: "ariel",
+        name: {
+          en: "Ariel View",
+          te: "ఏరియల్ వీక్షణ"
+        },
+        info: {
+          en: "High-angle panoramic view showcasing the entire market site layout, road access, and landscape envelope.",
+          te: "మొత్తం మార్కెట్ స్థల లేఅవుట్, రహదారి ప్రవేశం మరియు ప్రకృతి దృశ్యాన్ని ప్రదర్శించే విశాలమైన ఏరియల్ వీక్షణ."
+        },
+        image: "Ariel View.png",
+        rotation: "0 0 0",
+        waypoints: [
+          {
+            target: "cafe",
+            position: "4 0.15 -7",
+            label: {
+              en: "Enter Cafe",
+              te: "కేఫ్‌లోకి వెళ్లండి"
+            }
+          }
+        ]
+      },
+      {
+        id: "cafe",
+        name: {
+          en: "Cafe",
+          te: "కేఫ్"
+        },
+        info: {
+          en: "Indoor-outdoor dining pavilion featuring vibrant red curved structures, overhead structural trusses, and seating zones.",
+          te: "ఎరుపు రంగు నిర్మాణ శైలి మరియు బహిరంగ సీటింగ్‌తో కూడిన డైనింగ్ పెవిలియన్."
+        },
+        image: "Cafe.png",
+        rotation: "0 0 0",
+        waypoints: [
+          {
+            target: "charpoy",
+            position: "0 0.15 5",
+            label: {
+              en: "Go to Charpoy Area",
+              te: "చార్‌పాయ్ ప్రాంతానికి వెళ్లండి"
+            }
+          },
+          {
+            target: "ariel",
+            position: "0 0.15 -6",
+            label: {
+              en: "Return to Ariel View",
+              te: "ఏరియల్ వీక్షణకు తిరిగి వెళ్ళండి"
+            }
+          }
+        ]
+      },
+      {
+        id: "charpoy",
+        name: {
+          en: "Charpoy",
+          te: "చార్‌పాయ్"
+        },
+        info: {
+          en: "Outdoor traditional charpoy seating court laid with textured stone pavers under the open sky.",
+          te: "బహిరంగ ఆకాశం క్రింద రాతి పేవర్‌లతో కూడిన సాంప్రదాయ చార్‌పాయ్ సీటింగ్ కోర్ట్."
+        },
+        image: "Charpoy.jpg",
+        rotation: "0 0 0",
+        waypoints: [
+          {
+            target: "totlot",
+            position: "5 0.15 -4",
+            label: {
+              en: "Go to Totlot",
+              te: "టాట్‌లాట్‌కు వెళ్లండి"
+            }
+          },
+          {
+            target: "cafe",
+            position: "-5 0.15 -4",
+            label: {
+              en: "Enter Cafe",
+              te: "కేఫ్‌లోకి వెళ్లండి"
+            }
+          }
+        ]
+      },
+      {
+        id: "totlot",
+        name: {
+          en: "Totlot",
+          te: "టాట్‌లాట్"
+        },
+        info: {
+          en: "Shaded children's play park with playground furniture, stepping stone pathways, and tree canopies under arched roof covers.",
+          te: "తోరణాల పైకప్పు కింద ఆట పరికరాలు మరియు నడక మార్గాలతో కూడిన పిల్లల ఆట స్థలం."
+        },
+        image: "Totlot.jpg",
+        rotation: "0 0 0",
+        waypoints: [
+          {
+            target: "charpoy",
+            position: "0 0.15 -6",
+            label: {
+              en: "Go to Charpoy Area",
+              te: "చార్‌పాయ్ ప్రాంతానికి వెళ్లండి"
+            }
+          }
+        ]
+      }
+    ];
+
+    const translations = {
+      en: {
+        eyebrow: "Virtual Reality Walkthrough",
+        title: "Sardar Vallabhai Patel Market",
+        subtitle: "virtual reality experience",
+        start: "START TOUR",
+        menu_home: "Home",
+        menu_plan: "Site Plan",
+        menu_vr: "VR Mode",
+        siteplan_title: "Site Plan",
+        siteplan_desc: "Click any highlighted area on the site plan to teleport directly into the 360 space:",
+        info_tag: "About this place",
+        cafe_short: "Cafe",
+        charpoy_short: "Charpoy",
+        totlot_short: "Totlot"
+      },
+      te: {
+        eyebrow: "వర్చువల్ రియాలిటీ వాక్‌త్రూ",
+        title: "సర్దార్ వల్లభాయ్ పటేల్ మార్కెట్",
+        subtitle: "వర్చువల్ రియాలిటీ అనుభవం",
+        start: "ప్రారంభించండి",
+        menu_home: "హోమ్",
+        menu_plan: "ప్లాన్",
+        menu_vr: "విఆర్ మోడ్",
+        siteplan_title: "సైట్ ప్లాన్",
+        siteplan_desc: "ఆ ప్రదేశం యొక్క 360° వీక్షణ కోసం సైట్ ప్లాన్‌పై గుర్తును నొక్కండి:",
+        info_tag: "ఈ ప్రదేశం గురించి",
+        cafe_short: "కేఫ్",
+        charpoy_short: "చార్‌పాయ్",
+        totlot_short: "టాట్‌లాట్"
+      }
+    };
+
+    let currentLang = 'en';
+    let activeSceneId = "ariel";
+
+    const sky = document.querySelector('#skybox');
+    const waypointGroup = document.querySelector('#waypoint-group');
+    const aScene = document.querySelector('a-scene');
+    const sidebar = document.querySelector('#sidebar-menu');
+    const sitePlanModal = document.querySelector('#siteplan-modal');
+    const infoBtn = document.querySelector('#info-btn');
+    const infoPanel = document.querySelector('#info-panel');
+
+    function switchScene(sceneId) {
+      const scene = tourData.find(s => s.id === sceneId);
+      if (!scene) return;
+      activeSceneId = sceneId;
+
+      sky.setAttribute('animation__fadeout', {
+        property: 'material.opacity',
+        to: 0,
+        dur: 280,
+        easing: 'easeInOutQuad'
+      });
+
+      setTimeout(() => {
+        sky.setAttribute('src', scene.image);
+        sky.setAttribute('rotation', scene.rotation || '0 0 0');
+        renderInfo(scene);
+        renderWaypoints(scene.waypoints);
+
+        sky.setAttribute('animation__fadein', {
+          property: 'material.opacity',
+          to: 1,
+          dur: 280,
+          easing: 'easeInOutQuad'
+        });
+      }, 280);
+    }
+
+    function renderWaypoints(waypoints) {
+      waypointGroup.innerHTML = '';
+      if (!waypoints) return;
+
+      waypoints.forEach(wp => {
+        const wpEntity = document.createElement('a-entity');
+        wpEntity.setAttribute('position', wp.position);
+        
+        wpEntity.innerHTML = `
+          <a-ring 
+            class="clickable" 
+            radius-inner="0.32" 
+            radius-outer="0.65" 
+            color="#2ecc71" 
+            rotation="-90 0 0" 
+            material="opacity: 0.85; transparent: true">
+          </a-ring>
+          <a-text 
+            value="${wp.label[currentLang]}" 
+            position="0 0.8 0" 
+            align="center" 
+            scale="0.9 0.9 0.9" 
+            color="#ffffff" 
+            look-at="#head">
+          </a-text>
+        `;
+
+        wpEntity.querySelector('.clickable').addEventListener('click', () => {
+          switchScene(wp.target);
+        });
+
+        waypointGroup.appendChild(wpEntity);
+      });
+    }
+
+    function renderInfo(scene) {
+      document.querySelector('#info-title').innerText = scene.name[currentLang];
+      document.querySelector('#info-text').innerText = scene.info[currentLang];
+    }
+
+    window.selectFromSitePlan = function(sceneId) {
+      sitePlanModal.classList.add('hidden');
+      switchScene(sceneId);
+    };
+
+    function updateLanguage(lang) {
+      currentLang = lang;
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (translations[lang][key]) {
+          el.innerText = translations[lang][key];
+        }
+      });
+
+      document.querySelector('#pin-cafe-title').innerText = translations[lang].cafe_short;
+      document.querySelector('#pin-charpoy-title').innerText = translations[lang].charpoy_short;
+      document.querySelector('#pin-totlot-title').innerText = translations[lang].totlot_short;
+
+      const scene = tourData.find(s => s.id === activeSceneId);
+      if (scene) {
+        renderInfo(scene);
+        renderWaypoints(scene.waypoints);
+      }
+    }
+
+    // UI Event Handlers
+    document.getElementById('btn-start').addEventListener('click', () => {
+      document.getElementById('welcome-screen').classList.add('hidden');
+      sidebar.classList.add('visible');
+      infoBtn.classList.add('visible');
+      switchScene(activeSceneId);
+    });
+
+    document.getElementById('btn-home').addEventListener('click', () => {
+      sitePlanModal.classList.add('hidden');
+      infoPanel.classList.remove('open');
+      infoBtn.classList.remove('open', 'visible');
+      sidebar.classList.remove('visible');
+      waypointGroup.innerHTML = '';
+      activeSceneId = 'ariel';
+      document.getElementById('welcome-screen').classList.remove('hidden');
+    });
+
+    infoBtn.addEventListener('click', () => {
+      const open = infoPanel.classList.toggle('open');
+      infoBtn.classList.toggle('open', open);
+    });
+
+    document.getElementById('btn-siteplan').addEventListener('click', () => {
+      sitePlanModal.classList.remove('hidden');
+    });
+
+    document.getElementById('btn-close-plan').addEventListener('click', () => {
+      sitePlanModal.classList.add('hidden');
+    });
+
+    document.getElementById('btn-vr').addEventListener('click', () => {
+      if (aScene.enterVR) {
+        aScene.enterVR();
+      }
+    });
+
+    document.getElementById('btn-lang').addEventListener('click', () => {
+      const nextLang = currentLang === 'en' ? 'te' : 'en';
+      updateLanguage(nextLang);
+    });
+  </script>
+</body>
+</html>
