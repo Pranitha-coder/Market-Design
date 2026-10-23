@@ -7,14 +7,12 @@
   
   <!-- A-Frame VR Framework -->
   <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
-  <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>
 
   <style>
     :root {
       --bg-glass: rgba(15, 23, 42, 0.88);
       --border-glass: rgba(255, 255, 255, 0.2);
       --accent: #2ecc71;
-      --accent-hover: #27ae60;
       --text-main: #ffffff;
       --text-sub: #cbd5e1;
       --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -37,7 +35,7 @@
       color: var(--text-main);
     }
 
-    /* ================= 1. WELCOME SCREEN (RIGHT-ALIGNED HERO BANNER) ================= */
+    /* ================= 1. WELCOME SCREEN ================= */
     #welcome-screen {
       position: absolute;
       inset: 0;
@@ -76,7 +74,6 @@
       flex-direction: column;
       align-items: flex-start;
       text-align: left;
-      animation: fadeInRight 0.8s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .eyebrow-tag {
@@ -95,7 +92,6 @@
       font-weight: 800;
       line-height: 1.25;
       color: #ffffff;
-      text-shadow: 0 4px 18px rgba(0,0,0,0.9);
       margin-bottom: 14px;
     }
 
@@ -119,19 +115,15 @@
       border: 1.5px solid var(--accent);
       border-radius: 40px;
       cursor: pointer;
-      box-shadow: 0 0 25px rgba(46, 204, 113, 0.4);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
       display: inline-flex;
       align-items: center;
       gap: 12px;
-      transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+      transition: all 0.3s ease;
     }
 
     .btn-start:hover {
       background: var(--accent);
       color: #0b0f14;
-      box-shadow: 0 0 40px rgba(46, 204, 113, 0.85);
       transform: translateY(-2px);
     }
 
@@ -143,33 +135,23 @@
       z-index: 500;
       width: 48px;
       height: 48px;
-      border-radius: 50%;
+      border-radius: 14px;
       background: var(--bg-glass);
       border: 1.5px solid var(--accent);
       color: #ffffff;
-      font-size: 1.3rem;
+      font-size: 1.2rem;
       font-weight: 700;
-      font-style: italic;
-      font-family: Georgia, "Times New Roman", serif;
+      font-family: Georgia, serif;
       cursor: pointer;
       display: none;
       align-items: center;
       justify-content: center;
       backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      box-shadow: 0 0 20px rgba(46, 204, 113, 0.35);
       transition: all 0.25s ease;
     }
 
-    #info-btn.visible {
-      display: flex;
-    }
-
-    #info-btn:hover, #info-btn.open {
-      background: var(--accent);
-      color: #0b0f14;
-      box-shadow: 0 0 30px rgba(46, 204, 113, 0.7);
-    }
+    #info-btn.visible { display: flex; }
+    #info-btn:hover, #info-btn.open { background: var(--accent); color: #0b0f14; }
 
     #info-panel {
       position: absolute;
@@ -182,7 +164,6 @@
       border-radius: 20px;
       padding: 22px 24px;
       backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
       box-shadow: 0 20px 45px rgba(0, 0, 0, 0.7);
       opacity: 0;
       visibility: hidden;
@@ -190,33 +171,10 @@
       transition: all 0.25s ease;
     }
 
-    #info-panel.open {
-      opacity: 1;
-      visibility: visible;
-      transform: translateY(0);
-    }
-
-    #info-panel h3 {
-      font-size: 1.1rem;
-      margin-bottom: 6px;
-      color: var(--accent);
-    }
-
-    #info-panel .info-tag {
-      font-size: 0.72rem;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      color: var(--text-sub);
-      margin-bottom: 10px;
-      display: block;
-    }
-
-    #info-panel p {
-      font-size: 0.92rem;
-      line-height: 1.6;
-      color: var(--text-sub);
-      user-select: text;
-    }
+    #info-panel.open { opacity: 1; visibility: visible; transform: translateY(0); }
+    #info-panel h3 { font-size: 1.1rem; margin-bottom: 6px; color: var(--accent); }
+    #info-panel .info-tag { font-size: 0.72rem; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-sub); margin-bottom: 10px; display: block; }
+    #info-panel p { font-size: 0.92rem; line-height: 1.6; color: var(--text-sub); }
 
     /* ================= 3. LEFT TRANSLUCENT MENU ================= */
     #sidebar-menu {
@@ -228,7 +186,6 @@
       background: var(--bg-glass);
       border: 1px solid var(--border-glass);
       backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
       border-radius: 20px;
       padding: 14px 8px;
       display: none;
@@ -237,9 +194,7 @@
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
     }
 
-    #sidebar-menu.visible {
-      display: flex;
-    }
+    #sidebar-menu.visible { display: flex; }
 
     .menu-item {
       background: transparent;
@@ -248,7 +203,6 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
       gap: 6px;
       padding: 10px 12px;
       min-width: 64px;
@@ -257,33 +211,16 @@
       transition: all 0.2s ease;
     }
 
-    .menu-item svg {
-      width: 22px;
-      height: 22px;
-      stroke: currentColor;
-      stroke-width: 2;
-      fill: none;
-    }
+    .menu-item svg { width: 22px; height: 22px; stroke: currentColor; stroke-width: 2; fill: none; }
+    .menu-item span { font-size: 0.72rem; letter-spacing: 0.5px; font-weight: 500; }
+    .menu-item:hover { background: rgba(255, 255, 255, 0.12); color: var(--accent); transform: scale(1.05); }
 
-    .menu-item span {
-      font-size: 0.72rem;
-      letter-spacing: 0.5px;
-      font-weight: 500;
-    }
-
-    .menu-item:hover {
-      background: rgba(255, 255, 255, 0.12);
-      color: var(--accent);
-      transform: scale(1.05);
-    }
-
-    /* ================= 4. SITE PLAN MODAL & INTERACTIVE MAP ================= */
+    /* ================= 4. SITE PLAN MODAL ================= */
     #siteplan-modal {
       position: absolute;
       inset: 0;
       background: rgba(0, 0, 0, 0.88);
       backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
       z-index: 1200;
       display: flex;
       justify-content: center;
@@ -291,11 +228,7 @@
       transition: opacity 0.3s ease, visibility 0.3s;
     }
 
-    #siteplan-modal.hidden {
-      opacity: 0;
-      visibility: hidden;
-      pointer-events: none;
-    }
+    #siteplan-modal.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
 
     .modal-content {
       background: var(--bg-glass);
@@ -318,7 +251,6 @@
       color: #fff;
       font-size: 1.8rem;
       cursor: pointer;
-      line-height: 1;
     }
 
     .plan-viewport {
@@ -343,64 +275,33 @@
       display: block;
     }
 
-    /* Clickable Waypoint Pins on the Plan */
-    .plan-pin {
-      position: absolute;
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      background: var(--accent);
-      border: 3px solid #ffffff;
-      transform: translate(-50%, -50%);
-      cursor: pointer;
-      box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.7);
-      animation: pinPulse 1.8s infinite;
-      transition: transform 0.25s ease;
-      padding: 0;
-      z-index: 10;
+    /* Clean Location Teleportation Bar */
+    .plan-nav-bar {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 20px;
     }
 
-    .plan-pin:hover {
-      transform: translate(-50%, -50%) scale(1.3);
-      background: #ffffff;
-      border-color: var(--accent);
-    }
-
-    .pin-label {
-      position: absolute;
-      bottom: 38px;
-      left: 50%;
-      transform: translateX(-50%);
-      white-space: nowrap;
-      background: var(--bg-glass);
-      border: 1px solid var(--border-glass);
+    .plan-nav-btn {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 10px;
+      padding: 10px 22px;
       color: #ffffff;
-      font-size: 0.8rem;
-      font-weight: 700;
+      font-size: 0.9rem;
+      font-weight: 600;
       letter-spacing: 0.5px;
-      line-height: 1;
-      padding: 7px 14px;
-      border-radius: 20px;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.2s ease, transform 0.2s ease;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+      cursor: pointer;
+      transition: all 0.25s ease;
     }
 
-    .plan-pin:hover .pin-label {
-      opacity: 1;
-      transform: translateX(-50%) translateY(-4px);
-    }
-
-    @keyframes pinPulse {
-      0%   { box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.8); }
-      70%  { box-shadow: 0 0 0 16px rgba(46, 204, 113, 0); }
-      100% { box-shadow: 0 0 0 0 rgba(46, 204, 113, 0); }
-    }
-
-    @keyframes fadeInRight {
-      from { opacity: 0; transform: translateX(40px); }
-      to { opacity: 1; transform: translateX(0); }
+    .plan-nav-btn:hover {
+      background: var(--accent);
+      color: #0b0f14;
+      border-color: var(--accent);
+      transform: translateY(-2px);
     }
   </style>
 </head>
@@ -440,12 +341,12 @@
     </button>
 
     <button class="menu-item" id="btn-vr" title="Enter VR Mode">
-      <svg viewBox="0 0 24 24"><path d="M4 7h16a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2h-3l-2.5-3h-5L7 17H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2z"></path><circle cx="8" cy="12" r="1.5"></circle><circle cx="16" cy="12" r="1.5"></circle></svg>
+      <svg viewBox="0 0 24 24"><path d="M4 7h16a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2h-3l-2.5-3h-5L7 17H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2z"></path><polyline points="8 12 10 12 14 12 16 12"></polyline></svg>
       <span data-i18n="menu_vr">VR Mode</span>
     </button>
 
     <button class="menu-item" id="btn-lang" title="Toggle Language">
-      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="3"></rect><path d="M7 9h10M12 9v6"></path></svg>
       <span id="lang-label">EN / TE</span>
     </button>
   </nav>
@@ -455,167 +356,95 @@
     <div class="modal-content">
       <button class="btn-close" id="btn-close-plan">&times;</button>
       <h2 data-i18n="siteplan_title">Site Plan</h2>
-      <p style="color: var(--text-sub); margin-top: 6px; font-size: 0.9rem;" data-i18n="siteplan_desc">Click any highlighted area on the site plan to teleport directly into the 360 space:</p>
+      <p style="color: var(--text-sub); margin-top: 6px; font-size: 0.9rem;" data-i18n="siteplan_desc">Select an architectural location below to explore in 360°:</p>
       
       <div class="plan-viewport">
         <img id="siteplan-img" 
              src="Site%20plan.jpg" 
              alt="Site Plan"
-             onerror="if(!this.dataset.retry){this.dataset.retry=1;this.src='Site plan.jpg';}else if(this.dataset.retry==1){this.dataset.retry=2;this.src='SitePlan.jpg';}else if(this.dataset.retry==2){this.dataset.retry=3;this.src='site plan.jpg';}">
-        
-        <!-- Interactive Waypoint Pins Positioned on the Plan -->
-        <button class="plan-pin" style="left: 69%; top: 30%;" onclick="selectFromSitePlan('cafe')" title="Cafe">
-          <span class="pin-label" id="pin-cafe-title">Cafe</span>
-        </button>
+             onerror="handlePlanImageError(this)">
+      </div>
 
-        <button class="plan-pin" style="left: 54%; top: 32%;" onclick="selectFromSitePlan('charpoy')" title="Charpoy">
-          <span class="pin-label" id="pin-charpoy-title">Charpoy</span>
+      <!-- Clean Destination Switcher -->
+      <div class="plan-nav-bar">
+        <button class="plan-nav-btn" onclick="selectFromSitePlan('ariel')">
+          <span data-i18n="ariel_short">Ariel View</span>
         </button>
-
-        <button class="plan-pin" style="left: 85%; top: 30%;" onclick="selectFromSitePlan('totlot')" title="Totlot">
-          <span class="pin-label" id="pin-totlot-title">Totlot</span>
+        <button class="plan-nav-btn" onclick="selectFromSitePlan('cafe')">
+          <span data-i18n="cafe_short">Cafe</span>
+        </button>
+        <button class="plan-nav-btn" onclick="selectFromSitePlan('charpoy')">
+          <span data-i18n="charpoy_short">Charpoy</span>
+        </button>
+        <button class="plan-nav-btn" onclick="selectFromSitePlan('totlot')">
+          <span data-i18n="totlot_short">Totlot</span>
         </button>
       </div>
     </div>
   </div>
 
-  <!-- ================= 5. A-FRAME 360 WEBXR SCENE ================= -->
+  <!-- ================= 5. A-FRAME 360 WEBXR SCENE (COMPLETELY CLEAN) ================= -->
   <a-scene embedded loading-screen="dotsColor: #2ecc71; backgroundColor: #0a0e14" vr-mode-ui="enabled: false">
-    
-    <!-- 360 Panorama Projection Sphere -->
+    <!-- 360 Skybox Only -->
     <a-sky id="skybox" radius="100" rotation="0 0 0"></a-sky>
 
-    <!-- Hotspot Ring Container -->
-    <a-entity id="waypoint-group"></a-entity>
-
-    <!-- Camera Rig & Meta Quest Laser Controls -->
+    <!-- Camera Rig for Quest Headset Tracking -->
     <a-entity id="rig" position="0 1.6 0">
-      <a-camera id="head" look-controls="pointerLockEnabled: false">
-        <a-cursor
-          id="cursor"
-          geometry="primitive: ring; radiusInner: 0.015; radiusOuter: 0.025"
-          material="color: #ffffff; shader: flat; opacity: 0.85"
-          animation__fuse="property: scale; startEvents: fusing; easing: easeInCubic; dur: 1200; from: 1 1 1; to: 0.2 0.2 0.2"
-          raycaster="objects: .clickable">
-        </a-cursor>
-      </a-camera>
-
-      <!-- Quest Controllers -->
-      <a-entity laser-controls="hand: right" raycaster="objects: .clickable; lineColor: #2ecc71; lineOpacity: 0.85"></a-entity>
-      <a-entity laser-controls="hand: left" raycaster="objects: .clickable; lineColor: #2ecc71; lineOpacity: 0.85"></a-entity>
+      <a-camera id="head" look-controls="pointerLockEnabled: false"></a-camera>
     </a-entity>
   </a-scene>
 
   <!-- ================= 6. APPLICATION CONTROLLER ================= -->
   <script>
+    function handlePlanImageError(img) {
+      const candidates = ['Site plan.jpg', 'SitePlan.jpg', 'site plan.jpg', 'site-plan.jpg', 'Site Plan.png', 'Site plan.png'];
+      let attempt = parseInt(img.dataset.attempt || '0', 10);
+      if (attempt < candidates.length) {
+        img.dataset.attempt = attempt + 1;
+        img.src = candidates[attempt];
+      }
+    }
+
     const tourData = [
       {
         id: "ariel",
-        name: {
-          en: "Ariel View",
-          te: "ఏరియల్ వీక్షణ"
-        },
+        name: { en: "Ariel View", te: "ఏరియల్ వీక్షణ" },
         info: {
           en: "High-angle panoramic view showcasing the entire market site layout, road access, and landscape envelope.",
           te: "మొత్తం మార్కెట్ స్థల లేఅవుట్, రహదారి ప్రవేశం మరియు ప్రకృతి దృశ్యాన్ని ప్రదర్శించే విశాలమైన ఏరియల్ వీక్షణ."
         },
         image: "Ariel View.png",
-        rotation: "0 0 0",
-        waypoints: [
-          {
-            target: "cafe",
-            position: "4 0.15 -7",
-            label: {
-              en: "Enter Cafe",
-              te: "కేఫ్‌లోకి వెళ్లండి"
-            }
-          }
-        ]
+        rotation: "0 0 0"
       },
       {
         id: "cafe",
-        name: {
-          en: "Cafe",
-          te: "కేఫ్"
-        },
+        name: { en: "Cafe", te: "కేఫ్" },
         info: {
           en: "Indoor-outdoor dining pavilion featuring vibrant red curved structures, overhead structural trusses, and seating zones.",
           te: "ఎరుపు రంగు నిర్మాణ శైలి మరియు బహిరంగ సీటింగ్‌తో కూడిన డైనింగ్ పెవిలియన్."
         },
         image: "Cafe.png",
-        rotation: "0 0 0",
-        waypoints: [
-          {
-            target: "charpoy",
-            position: "0 0.15 5",
-            label: {
-              en: "Go to Charpoy Area",
-              te: "చార్‌పాయ్ ప్రాంతానికి వెళ్లండి"
-            }
-          },
-          {
-            target: "ariel",
-            position: "0 0.15 -6",
-            label: {
-              en: "Return to Ariel View",
-              te: "ఏరియల్ వీక్షణకు తిరిగి వెళ్ళండి"
-            }
-          }
-        ]
+        rotation: "0 0 0"
       },
       {
         id: "charpoy",
-        name: {
-          en: "Charpoy",
-          te: "చార్‌పాయ్"
-        },
+        name: { en: "Charpoy", te: "చార్‌పాయ్" },
         info: {
           en: "Outdoor traditional charpoy seating court laid with textured stone pavers under the open sky.",
           te: "బహిరంగ ఆకాశం క్రింద రాతి పేవర్‌లతో కూడిన సాంప్రదాయ చార్‌పాయ్ సీటింగ్ కోర్ట్."
         },
         image: "Charpoy.jpg",
-        rotation: "0 0 0",
-        waypoints: [
-          {
-            target: "totlot",
-            position: "5 0.15 -4",
-            label: {
-              en: "Go to Totlot",
-              te: "టాట్‌లాట్‌కు వెళ్లండి"
-            }
-          },
-          {
-            target: "cafe",
-            position: "-5 0.15 -4",
-            label: {
-              en: "Enter Cafe",
-              te: "కేఫ్‌లోకి వెళ్లండి"
-            }
-          }
-        ]
+        rotation: "0 0 0"
       },
       {
         id: "totlot",
-        name: {
-          en: "Totlot",
-          te: "టాట్‌లాట్"
-        },
+        name: { en: "Totlot", te: "టాట్‌లాట్" },
         info: {
           en: "Shaded children's play park with playground furniture, stepping stone pathways, and tree canopies under arched roof covers.",
           te: "తోరణాల పైకప్పు కింద ఆట పరికరాలు మరియు నడక మార్గాలతో కూడిన పిల్లల ఆట స్థలం."
         },
         image: "Totlot.jpg",
-        rotation: "0 0 0",
-        waypoints: [
-          {
-            target: "charpoy",
-            position: "0 0.15 -6",
-            label: {
-              en: "Go to Charpoy Area",
-              te: "చార్‌పాయ్ ప్రాంతానికి వెళ్లండి"
-            }
-          }
-        ]
+        rotation: "0 0 0"
       }
     ];
 
@@ -629,8 +458,9 @@
         menu_plan: "Site Plan",
         menu_vr: "VR Mode",
         siteplan_title: "Site Plan",
-        siteplan_desc: "Click any highlighted area on the site plan to teleport directly into the 360 space:",
+        siteplan_desc: "Select an architectural location below to explore in 360°:",
         info_tag: "About this place",
+        ariel_short: "Ariel View",
         cafe_short: "Cafe",
         charpoy_short: "Charpoy",
         totlot_short: "Totlot"
@@ -644,8 +474,9 @@
         menu_plan: "ప్లాన్",
         menu_vr: "విఆర్ మోడ్",
         siteplan_title: "సైట్ ప్లాన్",
-        siteplan_desc: "ఆ ప్రదేశం యొక్క 360° వీక్షణ కోసం సైట్ ప్లాన్‌పై గుర్తును నొక్కండి:",
+        siteplan_desc: "360° లో అన్వేషించడానికి క్రింద ఉన్న స్థానాన్ని ఎంచుకోండి:",
         info_tag: "ఈ ప్రదేశం గురించి",
+        ariel_short: "ఏరియల్ వీక్షణ",
         cafe_short: "కేఫ్",
         charpoy_short: "చార్‌పాయ్",
         totlot_short: "టాట్‌లాట్"
@@ -656,7 +487,6 @@
     let activeSceneId = "ariel";
 
     const sky = document.querySelector('#skybox');
-    const waypointGroup = document.querySelector('#waypoint-group');
     const aScene = document.querySelector('a-scene');
     const sidebar = document.querySelector('#sidebar-menu');
     const sitePlanModal = document.querySelector('#siteplan-modal');
@@ -679,7 +509,6 @@
         sky.setAttribute('src', scene.image);
         sky.setAttribute('rotation', scene.rotation || '0 0 0');
         renderInfo(scene);
-        renderWaypoints(scene.waypoints);
 
         sky.setAttribute('animation__fadein', {
           property: 'material.opacity',
@@ -688,41 +517,6 @@
           easing: 'easeInOutQuad'
         });
       }, 280);
-    }
-
-    function renderWaypoints(waypoints) {
-      waypointGroup.innerHTML = '';
-      if (!waypoints) return;
-
-      waypoints.forEach(wp => {
-        const wpEntity = document.createElement('a-entity');
-        wpEntity.setAttribute('position', wp.position);
-        
-        wpEntity.innerHTML = `
-          <a-ring 
-            class="clickable" 
-            radius-inner="0.32" 
-            radius-outer="0.65" 
-            color="#2ecc71" 
-            rotation="-90 0 0" 
-            material="opacity: 0.85; transparent: true">
-          </a-ring>
-          <a-text 
-            value="${wp.label[currentLang]}" 
-            position="0 0.8 0" 
-            align="center" 
-            scale="0.9 0.9 0.9" 
-            color="#ffffff" 
-            look-at="#head">
-          </a-text>
-        `;
-
-        wpEntity.querySelector('.clickable').addEventListener('click', () => {
-          switchScene(wp.target);
-        });
-
-        waypointGroup.appendChild(wpEntity);
-      });
     }
 
     function renderInfo(scene) {
@@ -744,14 +538,9 @@
         }
       });
 
-      document.querySelector('#pin-cafe-title').innerText = translations[lang].cafe_short;
-      document.querySelector('#pin-charpoy-title').innerText = translations[lang].charpoy_short;
-      document.querySelector('#pin-totlot-title').innerText = translations[lang].totlot_short;
-
       const scene = tourData.find(s => s.id === activeSceneId);
       if (scene) {
         renderInfo(scene);
-        renderWaypoints(scene.waypoints);
       }
     }
 
@@ -768,7 +557,6 @@
       infoPanel.classList.remove('open');
       infoBtn.classList.remove('open', 'visible');
       sidebar.classList.remove('visible');
-      waypointGroup.innerHTML = '';
       activeSceneId = 'ariel';
       document.getElementById('welcome-screen').classList.remove('hidden');
     });
